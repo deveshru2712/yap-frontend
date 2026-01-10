@@ -1,30 +1,75 @@
+import FeauturesCard from "@/components/FeauturesCard";
+import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import { Button } from "@base-ui/react";
+import { ArrowRight, GlobeLock, Rocket, Video } from "lucide-react";
 
 export default function Home() {
+  const featuresList = [
+    {
+      id: 1,
+      icon: <Video />,
+      title: "Video Calls",
+      description: "Connect face-to-face with friends through video calling.",
+    },
+    {
+      id: 2,
+      icon: <GlobeLock />,
+      title: "Encrypted Messaging",
+      description: "Your messages are protected with end-to-end encryption.",
+    },
+    {
+      id: 3,
+      icon: <Rocket />,
+      title: "Blazing fast",
+      description: "Quick message delivery for smooth conversations.",
+    },
+  ];
+
   return (
-    <div className="h-screen w-full p-2">
-      <div className="flex h-full w-full flex-col rounded-md bg-[#12151D] px-4 py-4 md:px-8">
+    <div className="h-screen w-full overflow-y-auto p-3">
+      <div className="flex h-full w-full flex-col rounded-xl bg-[#12151D] px-4 py-4 md:px-8">
         {/* navbar */}
         <Navbar />
 
         {/* main content*/}
         <main className="mx-auto flex h-full w-full max-w-6xl items-center justify-center">
-          {/* text content */}
-          <div className="flex w-full flex-1 flex-col items-start text-left">
-            <h2 className="w-full text-3xl font-semibold text-white md:text-4xl lg:text-6xl">
-              Connect instantly with friends.
-            </h2>
-            <span className="mt-4 text-sm font-normal text-gray-100 md:mt-5 md:text-base lg:text-lg lg:font-medium">
-              Experience seamless, user-friendly messaging that{" "}
-              <br className="hidden lg:block" />
-              brings people together effortlessly.
-            </span>
+          <div className="flex flex-1 flex-col items-start gap-5">
+            {/* text content */}
+            <div className="flex w-full flex-col items-start text-left">
+              <h2 className="w-full text-3xl font-semibold text-white md:text-4xl lg:text-6xl">
+                Connect instantly with friends.
+              </h2>
+              <span className="mt-4 text-sm font-normal text-gray-100 md:mt-5 md:text-base lg:text-lg lg:font-medium">
+                Experience seamless, user-friendly messaging that{" "}
+                <br className="hidden lg:block" />
+                brings people together effortlessly.
+              </span>
+            </div>
+
+            {/* cta */}
+            <Button className="flex cursor-pointer items-center rounded-sm bg-blue-500/95 p-2 text-sm font-medium text-white transition-all duration-200 hover:bg-blue-500 active:bg-blue-500">
+              Start Chatting Now <ArrowRight className="ml-1 size-4" />
+            </Button>
           </div>
 
           {/* Images */}
           <div className="hidden flex-1 md:block"></div>
         </main>
       </div>
+
+      {/* features section */}
+      <section className="mx-auto flex max-w-6xl flex-col items-center justify-center gap-6 px-4 py-16 md:gap-8 md:py-20 lg:py-30">
+        <h2 className="text-3xl font-semibold md:text-4xl lg:text-5xl">
+          Features
+        </h2>
+        <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+          {featuresList.map((feature) => (
+            <FeauturesCard key={feature.id} {...feature} />
+          ))}
+        </div>
+      </section>
+      <Footer />
     </div>
   );
 }
