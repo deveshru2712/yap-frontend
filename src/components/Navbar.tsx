@@ -31,18 +31,23 @@ export default function Navbar() {
 
               {/* Desktop: Both buttons */}
               <div className="hidden gap-2 sm:flex">
-                <Button
-                  variant={"outline"}
-                  className="rounded-sm border-slate-400 bg-transparent text-white"
-                >
-                  Login
-                </Button>
-                <Button
-                  variant={"default"}
-                  className="rounded-sm border-none bg-blue-500 text-white hover:bg-blue-500/80"
-                >
-                  Sign Up
-                </Button>
+                <Link href={"/sign-in"}>
+                  <Button
+                    variant={"outline"}
+                    className="rounded-sm border-slate-400 bg-transparent text-white"
+                  >
+                    Login
+                  </Button>
+                </Link>
+
+                <Link href={"/sign-up"}>
+                  <Button
+                    variant={"default"}
+                    className="rounded-sm border-none bg-blue-500 text-white hover:bg-blue-500/80"
+                  >
+                    Sign Up
+                  </Button>
+                </Link>
               </div>
             </div>
           ) : (
