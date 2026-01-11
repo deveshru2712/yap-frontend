@@ -6,9 +6,10 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { useSignUp } from "@/hooks/use-auth";
 
 const schema = z.object({
-  username: z.string(),
+  userName: z.string(),
   email: z.email(),
   password: z.string().min(6, { message: "Password must be of 6 character" }),
 });
@@ -16,11 +17,10 @@ const schema = z.object({
 type Errors = Record<string, string | string[]>;
 
 export default function SignUpForm() {
-  const [loading, setLoading] = React.useState(false);
+  const { isPending, mutate: signUp } = useSignUp();
   const [errors, setErrors] = React.useState<Errors>({});
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    setLoading(true);
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const result = schema.safeParse(Object.fromEntries(formData));
@@ -28,12 +28,10 @@ export default function SignUpForm() {
     if (!result.success) {
       const { fieldErrors } = z.flattenError(result.error);
       setErrors(fieldErrors as Errors);
-      setLoading(false);
       return;
     }
-
-    console.log(result.data);
-    setLoading(false);
+    // calling the signup function
+    signUp(result.data);
   };
 
   return (
@@ -46,10 +44,10 @@ export default function SignUpForm() {
           </p>
         </div>
         <Form className="space-y-4" errors={errors} onSubmit={onSubmit}>
-          <Field name="username">
+          <Field name="userName">
             <FieldLabel>Username</FieldLabel>
             <Input
-              disabled={loading}
+              disabled={isPending}
               placeholder="jhondoe"
               type="text"
               className="w-full"
@@ -59,7 +57,7 @@ export default function SignUpForm() {
           <Field name="email">
             <FieldLabel>Email</FieldLabel>
             <Input
-              disabled={loading}
+              disabled={isPending}
               placeholder="jhon@doe.com"
               type="email"
               className="w-full"
@@ -69,15 +67,15 @@ export default function SignUpForm() {
           <Field name="password">
             <FieldLabel>Password</FieldLabel>
             <Input
-              disabled={loading}
+              disabled={isPending}
               placeholder="******"
               type="password"
               className="w-full"
             />
             <FieldError />
           </Field>
-          <Button disabled={loading} type="submit" className="w-full">
-            {loading ? "Signing in..." : "Sign In"}
+          <Button disabled={isPending} type="submit" className="w-full">
+            {isPending ? "Signing in..." : "Sign In"}
           </Button>
         </Form>
 

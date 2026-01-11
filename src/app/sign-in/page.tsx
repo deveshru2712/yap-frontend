@@ -6,6 +6,7 @@ export default function LoginPage() {
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
       <div className="flex flex-col justify-center gap-4 p-6 md:p-10">
+        {/* icon */}
         <div className="flex justify-center gap-2 md:justify-start">
           <Link
             href="/"
@@ -15,6 +16,7 @@ export default function LoginPage() {
             Just Yap
           </Link>
         </div>
+        {/* form */}
         <div className="flex items-center justify-center md:flex-1">
           <div className="w-full max-w-xs">
             <SignInForm />

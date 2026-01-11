@@ -10,6 +10,7 @@ interface User {
 interface AuthStoreState {
   user: User | null;
   isAuthenticated: boolean;
+  hasCheckedAuthStatus: boolean;
   setUser: (user: User | null) => void;
   logOut: () => void;
 }
@@ -19,19 +20,18 @@ export const useAuthStore = create<AuthStoreState>()(
     (set, get) => ({
       user: null,
       isAuthenticated: false,
+      hasCheckedAuthStatus: false,
       setUser: (user: User | null) => {
-        set({ user, isAuthenticated: !!user });
+        set({ user, isAuthenticated: !!user, hasCheckedAuthStatus: true });
       },
-
       logOut: () => {
-        set({ user: null, isAuthenticated: false });
+        set({ user: null, isAuthenticated: false, hasCheckedAuthStatus: true });
       },
     }),
     {
       name: "auth-storage",
       partialize: (state) => ({
         user: state.user,
-        isAuthenticated: state.isAuthenticated,
       }),
       storage: createJSONStorage(() => sessionStorage),
     },

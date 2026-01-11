@@ -1,5 +1,7 @@
+"use client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/stores/auth-store";
+import { useEffect } from "react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -11,33 +13,33 @@ interface User {
 
 // Verify session
 export const useVerifySession = () => {
-  return useQuery({
+  const { setUser } = useAuthStore();
+
+  const query = useQuery({
     queryKey: ["auth", "verify"],
     queryFn: async () => {
-      const { setUser } = useAuthStore();
+      const res = await fetch(`${API_URL}/v1/api/auth/verify`, {
+        credentials: "include",
+      });
 
-      try {
-        const res = await fetch(`${API_URL}/v1/api/auth/verify`, {
-          credentials: "include",
-        });
-
-        if (!res.ok) {
-          setUser(null);
-          throw new Error("Not authenticated");
-        }
-
-        const data = await res.json();
-        setUser(data.user);
-        return data.user as User;
-      } catch (error) {
-        setUser(null);
-        throw error;
-      }
+      if (!res.ok) throw new Error("Unauthorized");
+      return (await res.json()).user as User;
     },
     retry: false,
-    staleTime: 5 * 60 * 1000,
-    refetchOnWindowFocus: false,
+    staleTime: 0,
   });
+
+  useEffect(() => {
+    if (query.status === "success") {
+      setUser(query.data);
+    }
+
+    if (query.status === "error") {
+      setUser(null);
+    }
+  }, [query.status, query.data, setUser]);
+
+  return query;
 };
 
 // Sign in
@@ -62,7 +64,7 @@ export const useSignIn = () => {
     },
     onSuccess: async () => {
       // Refetch verify query which will update the user in store
-      await queryClient.invalidateQueries({
+      await queryClient.refetchQueries({
         queryKey: ["auth", "verify"],
       });
     },
@@ -94,7 +96,7 @@ export const useSignUp = () => {
       return res.json();
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
+      await queryClient.refetchQueries({
         queryKey: ["auth", "verify"],
       });
     },
@@ -103,7 +105,7 @@ export const useSignUp = () => {
 
 // Logout
 export const useLogout = () => {
-  const queryClient = useQueryClient();
+  const { logOut } = useAuthStore();
 
   return useMutation({
     mutationFn: async () => {
@@ -113,13 +115,9 @@ export const useLogout = () => {
       });
 
       if (!res.ok) throw new Error("Logout failed");
-
-      return res.json();
     },
     onSuccess: () => {
-      const { logOut } = useAuthStore();
       logOut();
-      queryClient.clear();
     },
   });
 };
