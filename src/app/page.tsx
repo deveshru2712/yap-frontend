@@ -1,8 +1,8 @@
 import FeauturesCard from "@/components/FeauturesCard";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { Button } from "@base-ui/react";
 import { ArrowRight, GlobeLock, Rocket, Video } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   const featuresList = [
@@ -48,9 +48,12 @@ export default function Home() {
             </div>
 
             {/* cta */}
-            <Button className="flex cursor-pointer items-center rounded-sm bg-blue-500/95 p-2 text-sm font-medium text-white transition-all duration-200 hover:bg-blue-500 active:bg-blue-500">
+            <Link
+              href={"/message"}
+              className="flex cursor-pointer items-center rounded-sm bg-blue-500/95 p-2 text-sm font-medium text-white transition-all duration-200 hover:bg-blue-500 active:bg-blue-500"
+            >
               Start Chatting Now <ArrowRight className="ml-1 size-4" />
-            </Button>
+            </Link>
           </div>
 
           {/* Images */}
