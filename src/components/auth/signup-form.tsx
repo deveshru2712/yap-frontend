@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useSignUp } from "@/hooks/use-auth";
 
 const schema = z.object({
-  userName: z.string(),
+  username: z.string(),
   email: z.email(),
   password: z.string().min(6, { message: "Password must be of 6 character" }),
 });
@@ -44,7 +44,7 @@ export default function SignUpForm() {
           </p>
         </div>
         <Form className="space-y-4" errors={errors} onSubmit={onSubmit}>
-          <Field name="userName">
+          <Field name="username">
             <FieldLabel>Username</FieldLabel>
             <Input
               disabled={isPending}

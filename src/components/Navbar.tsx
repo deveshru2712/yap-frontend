@@ -77,7 +77,7 @@ export default function Navbar() {
                   )}
                 </div>
 
-                <span>{user?.userName}</span>
+                <span>{user?.username}</span>
               </MenuTrigger>
               <MenuPopup>
                 <MenuItem>Profile Settings</MenuItem>

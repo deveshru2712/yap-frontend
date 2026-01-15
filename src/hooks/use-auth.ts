@@ -8,7 +8,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 interface User {
   id: string;
   email: string;
-  userName: string;
+  username: string;
 }
 
 // Verify session
@@ -79,7 +79,7 @@ export const useSignUp = () => {
     mutationFn: async (data: {
       email: string;
       password: string;
-      userName: string;
+      username: string;
     }) => {
       const res = await fetch(`${API_URL}/v1/api/auth/sign-up`, {
         method: "POST",

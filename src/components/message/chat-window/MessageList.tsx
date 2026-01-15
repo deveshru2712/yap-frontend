@@ -4,7 +4,7 @@ const dummyData = [
   { id: 1, userId: "1", message: "Hi there!", time: new Date() },
   {
     id: 2,
-    userId: "019bac43-a4c0-726b-bc9d-a29dd9958c93",
+    userId: "019bb79b-0000-718b-aaed-87eb22101ee5",
     message: "Hello 👋",
     time: new Date(Date.now() - 1000 * 60),
   },
@@ -16,7 +16,7 @@ const dummyData = [
   },
   {
     id: 4,
-    userId: "019bac43-a4c0-726b-bc9d-a29dd9958c93",
+    userId: "019bb79b-0000-718b-aaed-87eb22101ee5",
     message: "I'm good, thanks!",
     time: new Date(Date.now() - 1000 * 60 * 3),
   },
@@ -34,7 +34,7 @@ const dummyData = [
   },
   {
     id: 7,
-    userId: "019bac43-a4c0-726b-bc9d-a29dd9958c93",
+    userId: "019bb79b-0000-718b-aaed-87eb22101ee5",
     message: "Nice! Using Next.js?",
     time: new Date(Date.now() - 1000 * 60 * 10),
   },
@@ -52,7 +52,7 @@ const dummyData = [
   },
   {
     id: 10,
-    userId: "019bac43-a4c0-726b-bc9d-a29dd9958c93",
+    userId: "019bb79b-0000-718b-aaed-87eb22101ee5",
     message: "Nice! Using Next.js?",
     time: new Date(Date.now() - 1000 * 60 * 10),
   },
