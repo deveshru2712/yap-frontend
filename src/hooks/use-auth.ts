@@ -23,7 +23,9 @@ export const useVerifySession = () => {
       });
 
       if (!res.ok) throw new Error("Unauthorized");
-      return (await res.json()).user as User;
+
+      const { user } = await res.json();
+      return user as User;
     },
     retry: false,
     staleTime: 0,
