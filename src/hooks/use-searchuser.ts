@@ -16,7 +16,7 @@ export const useSearchUsername = (username: string) => {
       }
 
       const { data } = await res.json();
-      return data as User[];
+      return data as recentConversation[];
     },
   });
 };

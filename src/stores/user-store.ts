@@ -2,23 +2,23 @@ import { create } from "zustand";
 
 interface UserStoreState {
   username: string | null;
-  userList: User[] | null;
+  recentConvoList: recentConversation[];
 }
 
 interface UserStoreActions {
   setUsername: (username: string) => void;
-  setUserList: (userList: User[]) => void;
+  setRecentConvoList: (recentConvoList: recentConversation[]) => void;
 }
 
 type UserStoreTypes = UserStoreState & UserStoreActions;
 
 export const useUserStore = create<UserStoreTypes>((set) => ({
   username: null,
-  userList: null,
+  recentConvoList: [],
   setUsername: (username) => {
     set({ username });
   },
-  setUserList: (list) => {
-    set({ userList: list });
+  setRecentConvoList: (list) => {
+    set({ recentConvoList: list });
   },
 }));

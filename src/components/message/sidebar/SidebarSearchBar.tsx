@@ -1,21 +1,10 @@
 "use client";
-import { useEffect } from "react";
 import { Search } from "lucide-react";
-
 import { Input } from "@/components/ui/input";
-import { useDebounce } from "@/hooks/use-debounce";
-import { useSearchUsername } from "@/hooks/use-searchuser";
 import { useUserStore } from "@/stores/user-store";
 
 export default function SidebarSearchBar() {
   const { username, setUsername } = useUserStore();
-  const debouncedSearch = useDebounce(username || "", 1000);
-
-  const { data: userList } = useSearchUsername(debouncedSearch);
-
-  useEffect(() => {
-    console.log(userList);
-  }, [userList]);
 
   return (
     <div className="w-full p-2">

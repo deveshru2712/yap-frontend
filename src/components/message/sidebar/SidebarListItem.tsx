@@ -9,11 +9,11 @@ interface UserListItemProps {
   time: Date;
 }
 
-export default function UserListItem({
+export default function SideBarListItem({
   username,
   profilePic,
-  latestMessage,
-  time,
+  latestMessage = "hi",
+  time = new Date("2026-01-01T00:00:00"),
 }: UserListItemProps) {
   return (
     <div className="w-full rounded-sm bg-neutral-200/60 px-2 py-1">

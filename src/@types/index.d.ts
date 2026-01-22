@@ -3,3 +3,8 @@ interface User {
   email: string;
   username: string;
 }
+
+interface recentConversation extends User {
+  latestMessage: string;
+  time: Date;
+}
