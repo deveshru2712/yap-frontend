@@ -32,8 +32,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   if (!hasCheckedAuthStatus) {
     return (
-      <div className="flex h-screen w-full items-center justify-center">
+      <div className="flex h-screen w-full flex-col items-center justify-center gap-2">
         <Loader />
+        <span className="text-muted-foreground text-sm font-medium">
+          Loading...
+        </span>
       </div>
     );
   }

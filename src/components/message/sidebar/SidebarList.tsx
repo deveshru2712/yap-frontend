@@ -8,11 +8,7 @@ export default function SidebarList() {
   const { username } = useUserStore();
   const debouncedSearch = useDebounce(username || "");
 
-  const {
-    data: userList,
-    isLoading,
-    isFetching,
-  } = useSearchUsername(debouncedSearch);
+  const { data: userList, isFetching } = useSearchUsername(debouncedSearch);
 
   if (!username?.trim()) {
     return null;
