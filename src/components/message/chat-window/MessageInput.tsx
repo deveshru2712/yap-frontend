@@ -6,35 +6,40 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuthStore } from "@/stores/auth-store";
 import { useSocketStore } from "@/stores/socket-store";
+import { useMessageStore } from "@/stores/message-store";
 
 export default function MessageInput() {
-  const [content, setContent] = useState("");
+  const { content, setContent } = useMessageStore();
   const { socket } = useSocketStore();
   const { user } = useAuthStore();
 
-  const onSubmitHandler = () => {
+  const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (socket) {
       socket.emit("msg", { senderId: user?.id, content });
       console.log("success");
     }
   };
+
   return (
-    <div className="flex gap-2">
-      <Input
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        placeholder="type here ..."
-        className={"rounded-sm"}
-        type="text"
-        disabled={!content.trim()}
-      />
-      <Button
-        onClick={onSubmitHandler}
-        variant={"outline"}
-        className="rounded-sm"
-      >
-        <Send />
-      </Button>
+    <div>
+      <form className="flex gap-2" onSubmit={onSubmitHandler}>
+        <Input
+          value={content || ""}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="type here ..."
+          className={"rounded-sm"}
+          type="text"
+        />
+        <Button
+          type="submit"
+          variant={"outline"}
+          className="rounded-sm"
+          disabled={!content?.trim()}
+        >
+          <Send />
+        </Button>
+      </form>
     </div>
   );
 }
