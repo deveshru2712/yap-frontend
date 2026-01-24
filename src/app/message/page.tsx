@@ -24,7 +24,7 @@ export default function MessagePage() {
       <main className="grid h-full w-full grid-cols-1 divide-x divide-neutral-200 md:grid-cols-3">
         {/* sidebar */}
         <Sidebar />
-        {/* chat windown */}
+        {/* chat window */}
         <ChatWindow />
       </main>
     </div>

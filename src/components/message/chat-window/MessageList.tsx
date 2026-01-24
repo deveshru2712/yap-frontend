@@ -62,19 +62,33 @@ const dummyData = [
     message: "Yep, with Zustand for auth state.",
     time: new Date(Date.now() - 1000 * 60 * 12),
   },
+  {
+    id: 12,
+    userId: "019bb79b-0000-718b-aaed-87eb22101ee5",
+    message: "Nice! Using Next.js?",
+    time: new Date(Date.now() - 1000 * 60 * 10),
+  },
+  {
+    id: 13,
+    userId: "1",
+    message: "Yep, with Zustand for auth state.",
+    time: new Date(Date.now() - 1000 * 60 * 12),
+  },
 ];
 
 export default function MessageList() {
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto p-4 pb-24">
-      {dummyData.map((data) => (
-        <MessageBubble
-          key={data.id}
-          message={data.message}
-          time={data.time}
-          userId={data.userId}
-        />
-      ))}
+    <div className="my-2 min-h-0 flex-1 overflow-y-auto">
+      <div className="flex flex-1 flex-col">
+        {dummyData.map((data) => (
+          <MessageBubble
+            key={data.id}
+            message={data.message}
+            time={data.time}
+            userId={data.userId}
+          />
+        ))}
+      </div>
     </div>
   );
 }

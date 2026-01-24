@@ -8,7 +8,7 @@ interface ChatHeaderProps {
 
 export default function ChatHeader({ username, profilePic }: ChatHeaderProps) {
   return (
-    <div className="w-full border-b px-4 py-3">
+    <div className="w-full border-b py-2">
       <div className="flex items-center gap-3">
         {/* Avatar */}
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100">

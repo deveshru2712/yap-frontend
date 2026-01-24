@@ -1,6 +1,6 @@
 "use client";
 import { useSocketStore } from "@/stores/socket-store";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { io, Socket } from "socket.io-client";
 
 export function useSocket() {
