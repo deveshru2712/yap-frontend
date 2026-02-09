@@ -5,7 +5,6 @@ interface MessageStoreState {
 }
 interface MessageStoreActions {
   setMessageContext: (data: Partial<MessageContext>) => void;
-  clearContent: () => void;
   resetMessageContext: () => void;
 }
 
@@ -18,7 +17,6 @@ export const useMessageStore = create<MessageStoreType>((set) => ({
     username: null,
     content: null,
   },
-
   setMessageContext: (data) =>
     set((state) => ({
       messageContext: {
@@ -26,14 +24,6 @@ export const useMessageStore = create<MessageStoreType>((set) => ({
         ...data,
       },
     })),
-  clearContent: () =>
-    set((state) => ({
-      messageContext: {
-        ...state.messageContext,
-        content: null,
-      },
-    })),
-
   resetMessageContext: () =>
     set({
       messageContext: {

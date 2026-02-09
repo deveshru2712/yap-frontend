@@ -3,10 +3,10 @@ import { useUserStore } from "@/stores/user-search-store";
 import { useDebounce } from "@/hooks/use-debounce";
 import { useSearchUsername } from "@/hooks/use-searchuser";
 import { cn } from "@/lib/utils";
-
 import SidebarListItemSkeleton from "@/components/message/skeleton/SidebarListItemSkeleton";
 import SideBarListItem from "@/components/message/sidebar/SidebarListItem";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface SidebarListProps {
   className?: string;
@@ -16,15 +16,14 @@ interface SidebarListProps {
 export default function SidebarList({ className, onClose }: SidebarListProps) {
   const { searchUserName } = useUserStore();
   const debouncedSearch = useDebounce(searchUserName || "");
-
   const { data: userList, isFetching } = useSearchUsername(debouncedSearch);
-
   const listRef = useRef<HTMLDivElement | null>(null);
-
+  const isMobile = useIsMobile();
   useEffect(() => {
+    if (!isMobile) return;
+
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as Node;
-
       if (listRef.current && !listRef.current.contains(target)) {
         onClose();
       }
@@ -35,15 +34,22 @@ export default function SidebarList({ className, onClose }: SidebarListProps) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside, true);
     };
-  }, [onClose]);
+  }, [onClose, !isMobile]);
 
   const isTyping = searchUserName !== debouncedSearch;
+
+  const handleItemClick = () => {
+    if (isMobile) {
+      onClose();
+    }
+  };
 
   return (
     <div
       ref={listRef}
       className={cn(
         "absolute inset-x-0 top-full z-10 mx-auto mt-1 w-[95%] rounded-sm border bg-white p-2 shadow-lg",
+        "w-full lg:static lg:border-none lg:shadow-none",
         className,
       )}
     >
@@ -60,7 +66,7 @@ export default function SidebarList({ className, onClose }: SidebarListProps) {
               <SideBarListItem
                 key={userinfo.id}
                 {...userinfo}
-                onClick={onClose}
+                onClick={handleItemClick}
               />
             ))}
           </div>

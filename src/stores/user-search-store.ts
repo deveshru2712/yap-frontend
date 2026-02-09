@@ -7,6 +7,7 @@ interface UserStoreState {
 
 interface UserStoreActions {
   setSearchUserName: (username: string) => void;
+  clearSearchUserName: () => void;
   setRecentConvoList: (recentConvoList: recentConversation[]) => void;
 }
 
@@ -17,6 +18,9 @@ export const useUserStore = create<UserStoreTypes>((set) => ({
   recentConvoList: [],
   setSearchUserName: (username) => {
     set({ searchUserName: username });
+  },
+  clearSearchUserName: () => {
+    set({ searchUserName: null, recentConvoList: [] });
   },
   setRecentConvoList: (list) => {
     set({ recentConvoList: list });
