@@ -22,7 +22,7 @@ export default function MessageInput() {
   };
 
   return (
-    <div>
+    <div className="shrink-0">
       <form className="flex gap-2" onSubmit={onSubmitHandler}>
         <Input
           value={content || ""}

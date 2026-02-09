@@ -19,14 +19,11 @@ export default function MessagePage() {
   }
 
   return (
-    <div className="h-screen w-full">
-      {/* chat layout */}
-      <main className="grid h-full w-full grid-cols-1 divide-x divide-neutral-200 md:grid-cols-3">
-        {/* sidebar */}
-        <Sidebar />
-        {/* chat window */}
-        <ChatWindow />
-      </main>
-    </div>
+    <main className="flex h-screen grid-cols-1 flex-col divide-x divide-neutral-200 md:grid md:grid-cols-3">
+      {/* sidebar */}
+      <Sidebar />
+      {/* chat window */}
+      <ChatWindow />
+    </main>
   );
 }

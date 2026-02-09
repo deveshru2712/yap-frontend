@@ -4,13 +4,13 @@ import SidebarSearchBar from "@/components/message/sidebar/SidebarSearchBar";
 
 export default function Sidebar() {
   return (
-    <div className="flex h-full w-full flex-col p-2">
+    <div className="relative flex h-fit w-full flex-col px-2 pt-2 pb-0 md:h-full md:pb-2">
       {/* sidebar header */}
       <SidebarHeader />
       {/* searchbar */}
       <SidebarSearchBar />
-      {/* list display data based on mode */}
-      <SidebarList />
+      {/* List Section - Scrollable */}
+      <SidebarList className="absolute inset-x-0 -bottom-12 z-10 mx-auto w-[92%] rounded-md md:block" />
     </div>
   );
 }

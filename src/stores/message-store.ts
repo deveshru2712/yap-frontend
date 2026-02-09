@@ -1,28 +1,46 @@
 import { create } from "zustand";
 
 interface MessageStoreState {
-  receiverId: string | null;
-  content: string | null;
+  messageContext: MessageContext;
 }
-
-interface MessageStoreAction {
-  setReceiverId: (userId: string) => void;
-  setContent: (content: string) => void;
+interface MessageStoreActions {
+  setMessageContext: (data: Partial<MessageContext>) => void;
   clearContent: () => void;
+  resetMessageContext: () => void;
 }
 
-type MessageStoreType = MessageStoreState & MessageStoreAction;
+type MessageStoreType = MessageStoreState & MessageStoreActions;
 
 export const useMessageStore = create<MessageStoreType>((set) => ({
-  receiverId: null,
-  content: null,
-  setReceiverId: (userId) => {
-    set({ receiverId: userId });
+  messageContext: {
+    receiverId: null,
+    profilepic: null,
+    username: null,
+    content: null,
   },
-  setContent: (content) => {
-    set({ content });
-  },
-  clearContent: () => {
-    set({ content: null });
-  },
+
+  setMessageContext: (data) =>
+    set((state) => ({
+      messageContext: {
+        ...state.messageContext,
+        ...data,
+      },
+    })),
+  clearContent: () =>
+    set((state) => ({
+      messageContext: {
+        ...state.messageContext,
+        content: null,
+      },
+    })),
+
+  resetMessageContext: () =>
+    set({
+      messageContext: {
+        receiverId: null,
+        username: null,
+        profilepic: null,
+        content: null,
+      },
+    }),
 }));

@@ -79,7 +79,7 @@ const dummyData = [
 export default function MessageList() {
   return (
     <div className="my-2 min-h-0 flex-1 overflow-y-auto">
-      <div className="flex flex-1 flex-col">
+      <div className="flex flex-col gap-2 pb-4">
         {dummyData.map((data) => (
           <MessageBubble
             key={data.id}
