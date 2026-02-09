@@ -49,7 +49,7 @@ export default function SidebarList({ className, onClose }: SidebarListProps) {
       ref={listRef}
       className={cn(
         "absolute inset-x-0 top-full z-10 mx-auto mt-1 w-[95%] rounded-sm border bg-white p-2 shadow-lg",
-        "w-full lg:static lg:border-none lg:shadow-none",
+        "md:static md:w-full lg:border-none lg:shadow-none",
         className,
       )}
     >

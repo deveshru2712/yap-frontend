@@ -5,7 +5,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const useSearchUsername = (username: string) => {
   return useQuery({
     enabled: !!username,
-    queryKey: ["search", "user", username],
+    queryKey: ["searchUser", username],
     queryFn: async () => {
       const res = await fetch(`${API_URL}/v1/api/user?username=${username}`, {
         credentials: "include",
