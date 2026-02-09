@@ -10,7 +10,7 @@ export default function ChatWindow() {
   return (
     <div className="flex flex-col overflow-hidden p-2 pt-0 md:col-span-2 md:pt-2">
       {messageContext.username ? (
-        <div className="flex flex-col overflow-hidden">
+        <div className="flex flex-col overflow-hidden px-2">
           {/* chat header */}
           <ChatHeader />
           {/* message list */}

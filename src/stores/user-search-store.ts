@@ -1,22 +1,22 @@
 import { create } from "zustand";
 
 interface UserStoreState {
-  username: string | null;
+  searchUserName: string | null;
   recentConvoList: recentConversation[];
 }
 
 interface UserStoreActions {
-  setUsername: (username: string) => void;
+  setSearchUserName: (username: string) => void;
   setRecentConvoList: (recentConvoList: recentConversation[]) => void;
 }
 
 type UserStoreTypes = UserStoreState & UserStoreActions;
 
 export const useUserStore = create<UserStoreTypes>((set) => ({
-  username: null,
+  searchUserName: null,
   recentConvoList: [],
-  setUsername: (username) => {
-    set({ username });
+  setSearchUserName: (username) => {
+    set({ searchUserName: username });
   },
   setRecentConvoList: (list) => {
     set({ recentConvoList: list });
