@@ -1,6 +1,6 @@
-import SignUpForm from "@/components/auth/signup-form";
 import Image from "next/image";
 import Link from "next/link";
+import SignUpForm from "@/components/auth/signup-form";
 
 export default function LoginPage() {
   return (

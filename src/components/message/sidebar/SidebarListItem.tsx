@@ -1,8 +1,8 @@
 "use client";
-import { useMessageStore } from "@/stores/message-store";
-import { formatMessageTime } from "@/utils/formatMessageTime";
 import { User } from "lucide-react";
 import Image from "next/image";
+import { useMessageStore } from "@/stores/message-store";
+import { formatMessageTime } from "@/utils/formatMessageTime";
 
 interface UserListItemProps {
   username: string;

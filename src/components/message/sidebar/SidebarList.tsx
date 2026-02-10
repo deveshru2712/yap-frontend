@@ -1,12 +1,12 @@
 "use client";
-import { useUserStore } from "@/stores/user-search-store";
+import { useEffect, useRef, useState } from "react";
+import SideBarListItem from "@/components/message/sidebar/SidebarListItem";
+import SidebarListItemSkeleton from "@/components/message/skeleton/SidebarListItemSkeleton";
 import { useDebounce } from "@/hooks/use-debounce";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { useSearchUsername } from "@/hooks/use-searchuser";
 import { cn } from "@/lib/utils";
-import SidebarListItemSkeleton from "@/components/message/skeleton/SidebarListItemSkeleton";
-import SideBarListItem from "@/components/message/sidebar/SidebarListItem";
-import { useEffect, useRef, useState } from "react";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useUserStore } from "@/stores/user-search-store";
 
 interface SidebarListProps {
   className?: string;
@@ -50,7 +50,7 @@ export default function SidebarList({ className, onClose }: SidebarListProps) {
       className={cn(
         "absolute inset-x-0 top-full z-10 mx-auto mt-1 w-[95%] rounded-sm border bg-white p-2 shadow-lg",
         "md:static md:w-full lg:border-none lg:shadow-none",
-        className,
+        className
       )}
     >
       <div className="flex flex-col gap-1">

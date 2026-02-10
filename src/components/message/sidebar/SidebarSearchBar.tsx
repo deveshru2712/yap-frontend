@@ -1,8 +1,8 @@
 "use client";
 import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useUserStore } from "@/stores/user-search-store";
 import { cn } from "@/lib/utils";
+import { useUserStore } from "@/stores/user-search-store";
 
 interface SidebarSearchBarProps {
   className?: string;

@@ -21,7 +21,7 @@ export default function FeauturesCard({
           "h-fit rounded-full p-2",
           id === 1 && "bg-red-300 text-red-600",
           id === 2 && "bg-blue-300 text-blue-600",
-          id === 3 && "bg-green-300 text-green-600",
+          id === 3 && "bg-green-300 text-green-600"
         )}
       >
         {icon}

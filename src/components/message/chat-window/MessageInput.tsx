@@ -5,8 +5,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuthStore } from "@/stores/auth-store";
-import { useSocketStore } from "@/stores/socket-store";
 import { useMessageStore } from "@/stores/message-store";
+import { useSocketStore } from "@/stores/socket-store";
 
 export default function MessageInput() {
   const { content, setContent } = useMessageStore();

@@ -1,9 +1,9 @@
 "use client";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { useAuthStore } from "@/stores/auth-store";
-import { useVerifySession } from "@/hooks/use-auth";
 import Loader from "@/components/Loader";
+import { useVerifySession } from "@/hooks/use-auth";
+import { useAuthStore } from "@/stores/auth-store";
 
 const authRoutes = ["/sign-in", "/sign-up"];
 

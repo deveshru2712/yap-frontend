@@ -36,6 +36,6 @@ export const useUserStore = create<UserStoreTypes>()(
         recentConvoList: state.recentConvoList,
       }),
       storage: createJSONStorage(() => sessionStorage),
-    },
-  ),
+    }
+  )
 );

@@ -33,6 +33,6 @@ export const useAuthStore = create<AuthStoreTypes>()(
         user: state.user,
       }),
       storage: createJSONStorage(() => sessionStorage),
-    },
-  ),
+    }
+  )
 );

@@ -1,7 +1,7 @@
 "use client";
-import { useSocketStore } from "@/stores/socket-store";
 import { useEffect } from "react";
-import { io, Socket } from "socket.io-client";
+import { io, type Socket } from "socket.io-client";
+import { useSocketStore } from "@/stores/socket-store";
 
 export function useSocket() {
   const { socket, setSocket, isConnected, setIsConnected } = useSocketStore();

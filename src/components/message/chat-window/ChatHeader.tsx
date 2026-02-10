@@ -1,7 +1,7 @@
 "use client";
-import { useMessageStore } from "@/stores/message-store";
 import { User } from "lucide-react";
 import Image from "next/image";
+import { useMessageStore } from "@/stores/message-store";
 
 export default function ChatHeader() {
   const { messageContext } = useMessageStore();

@@ -25,7 +25,7 @@ export default function MessageBubble({
             "flex flex-col",
             mine
               ? "bg-muted text-foreground rounded-br-sm"
-              : "rounded-bl-sm bg-blue-600 text-white",
+              : "rounded-bl-sm bg-blue-600 text-white"
           )}
         >
           <p className="text-sm leading-relaxed wrap-break-word">{message}</p>

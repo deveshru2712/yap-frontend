@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
-import { useUserStore } from "@/stores/user-search-store";
 import SidebarHeader from "@/components/message/sidebar/SidebarHeader";
 import SidebarList from "@/components/message/sidebar/SidebarList";
 import SidebarSearchBar from "@/components/message/sidebar/SidebarSearchBar";
+import { useUserStore } from "@/stores/user-search-store";
 
 export default function Sidebar() {
   const [showList, setShowList] = useState(false);

@@ -1,8 +1,8 @@
+import { ArrowRight, GlobeLock, Rocket, Video } from "lucide-react";
+import Link from "next/link";
 import FeauturesCard from "@/components/FeauturesCard";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { ArrowRight, GlobeLock, Rocket, Video } from "lucide-react";
-import Link from "next/link";
 
 export default function Home() {
   const featuresList = [

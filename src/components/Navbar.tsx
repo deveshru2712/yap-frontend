@@ -1,11 +1,11 @@
 "use client";
+import { LogOut, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Menu, MenuItem, MenuTrigger, MenuPopup } from "@/components/ui/menu";
-import { LogOut, User } from "lucide-react";
-import { useAuthStore } from "@/stores/auth-store";
+import { Menu, MenuItem, MenuPopup, MenuTrigger } from "@/components/ui/menu";
 import { useLogout } from "@/hooks/use-auth";
+import { useAuthStore } from "@/stores/auth-store";
 
 export default function Navbar() {
   const { isAuthenticated, user } = useAuthStore();

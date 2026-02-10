@@ -1,5 +1,5 @@
+import type { Socket } from "socket.io-client";
 import { create } from "zustand";
-import { Socket } from "socket.io-client";
 
 interface SocketStoreState {
   socket: Socket | null;
