@@ -1,6 +1,2 @@
 #!/usr/bin/env sh
-echo "=== Pre-commit hook started ==="
-echo "Running biome..."
 bun run lint:fix
-echo "=== Biome finished ==="
-echo "=== Pre-commit hook completed ==="
