@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import SideBarListItem from "@/components/message/sidebar/SidebarListItem";
 import SidebarListItemSkeleton from "@/components/message/skeleton/SidebarListItemSkeleton";
 import { useDebounce } from "@/hooks/use-debounce";
@@ -34,7 +34,7 @@ export default function SidebarList({ className, onClose }: SidebarListProps) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside, true);
     };
-  }, [onClose, !isMobile]);
+  }, [onClose, isMobile]);
 
   const isTyping = searchUserName !== debouncedSearch;
 

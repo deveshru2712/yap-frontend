@@ -18,7 +18,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!hasCheckedAuthStatus) return;
 
-    if (pathname == "/") return;
+    if (pathname === "/") return;
 
     if (isAuthenticated && authRoutes.includes(pathname)) {
       router.replace("/message");

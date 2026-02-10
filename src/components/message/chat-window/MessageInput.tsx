@@ -1,6 +1,5 @@
 "use client";
 import { Send } from "lucide-react";
-import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

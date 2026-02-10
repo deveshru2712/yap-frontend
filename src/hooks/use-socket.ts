@@ -29,7 +29,7 @@ export function useSocket() {
       socketInstance?.off("connect", handleConnect);
       socketInstance?.off("disconnect", handleDisconnect);
     };
-  }, []);
+  }, [setIsConnected, setSocket, socketInstance]);
 
   return { socket, isConnected };
 }
