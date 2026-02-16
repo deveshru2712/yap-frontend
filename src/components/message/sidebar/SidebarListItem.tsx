@@ -31,16 +31,14 @@ export default function SideBarListItem({
       onClick={handleClick}
       className="w-full cursor-pointer rounded-sm bg-neutral-200/60 px-2 py-1 transition-colors hover:bg-neutral-300/60"
     >
-      <div className="flex gap-2">
+      <div className="flex items-center gap-2">
         {/* Avatar */}
-        <div className="flex items-center justify-center rounded-full bg-neutral-100">
+        <div className="h-10 aspect-square flex items-center justify-center rounded-full bg-neutral-100">
           {profilepic ? (
             <Image
               src={profilepic}
               alt="profile picture"
-              height={40}
-              width={40}
-              className="size-10 rounded-full object-cover"
+              className="object-cover"
             />
           ) : (
             <User size={20} />

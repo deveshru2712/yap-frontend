@@ -36,12 +36,14 @@ export default function SidebarSearchBar({
         </div>
 
         {/* clear search button */}
-        <button
-          onClick={() => clearSearchUserName()}
-          className="cursor-pointer rounded-full p-0.5 hover:bg-white"
-        >
-          <X className="size-4" />
-        </button>
+        {searchUserName && (
+          <button
+            onClick={() => clearSearchUserName()}
+            className="cursor-pointer rounded-full p-0.5 hover:bg-white"
+          >
+            <X className="size-4" />
+          </button>
+        )}
       </div>
     </div>
   );
