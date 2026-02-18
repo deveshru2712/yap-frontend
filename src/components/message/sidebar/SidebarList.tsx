@@ -5,9 +5,9 @@ import SideBarListItem from "@/components/message/sidebar/SidebarListItem";
 import SidebarListItemSkeleton from "@/components/message/skeleton/SidebarListItemSkeleton";
 import { useDebounce } from "@/hooks/use-debounce";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useSearchUsername } from "@/hooks/use-searchuser";
+import { useSearch } from "@/hooks/use-searchuser";
 import { cn } from "@/lib/utils";
-import { useUserStore } from "@/stores/user-search-store";
+import { useUserStore } from "@/stores/search-store";
 
 interface SidebarListProps {
   className?: string;
@@ -15,9 +15,10 @@ interface SidebarListProps {
 }
 
 export default function SidebarList({ className, onClose }: SidebarListProps) {
-  const { searchUserName } = useUserStore();
-  const debouncedSearch = useDebounce(searchUserName || "");
-  const { data: userList, isFetching } = useSearchUsername(debouncedSearch);
+  const { query } = useUserStore();
+  const debouncedSearch = useDebounce(query || "");
+
+  const { data, isFetching } = useSearch(debouncedSearch);
 
   const listRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useIsMobile();
@@ -27,6 +28,7 @@ export default function SidebarList({ className, onClose }: SidebarListProps) {
 
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as Node;
+
       if (listRef.current && !listRef.current.contains(target)) {
         onClose();
       }
@@ -39,13 +41,19 @@ export default function SidebarList({ className, onClose }: SidebarListProps) {
     };
   }, [onClose, isMobile]);
 
-  const isTyping = searchUserName !== debouncedSearch;
+  const isTyping = query !== debouncedSearch;
 
   const handleItemClick = () => {
     if (isMobile) {
       onClose();
     }
   };
+
+  // Default to empty arrays to prevent undefined errors
+  const directUsers = data?.users ?? [];
+  const groups = data?.groups ?? [];
+
+  const hasResults = directUsers.length > 0 || groups.length > 0;
 
   return (
     <div
@@ -57,25 +65,26 @@ export default function SidebarList({ className, onClose }: SidebarListProps) {
       )}
     >
       <div className="flex flex-col gap-2">
-        {/* Loading State */}
+        {/* Loading */}
         {isFetching || isTyping ? (
           <div className="flex flex-col gap-0.5 rounded-md">
             <SidebarListItemSkeleton />
             <SidebarListItemSkeleton />
             <SidebarListItemSkeleton />
           </div>
-        ) : userList &&
-          (userList.users.length > 0 || userList.groups.length > 0) ? (
+        ) : hasResults ? (
           <div className="flex flex-col">
-            {/* Users Section */}
-            {userList.users.length > 0 && (
+            {/* Users */}
+            {directUsers.length > 0 && (
               <div className="flex flex-col">
                 <h3 className="text-muted-foreground p-1 text-sm">Users</h3>
                 <div className="flex flex-col gap-0.5 rounded-md">
-                  {userList!.users.map((userinfo) => (
+                  {directUsers.map((item) => (
                     <SideBarListItem
-                      key={userinfo.id}
-                      {...userinfo}
+                      key={item.id}
+                      latestMessage="hi"
+                      time={new Date("2026-01-01T00:00:00")}
+                      {...item}
                       onClick={handleItemClick}
                     />
                   ))}
@@ -83,15 +92,17 @@ export default function SidebarList({ className, onClose }: SidebarListProps) {
               </div>
             )}
 
-            {/* Groups Section */}
-            {userList.groups.length > 0 && (
+            {/* Groups */}
+            {groups.length > 0 && (
               <div className="flex flex-col">
                 <h3 className="text-muted-foreground p-1 text-sm">Groups</h3>
                 <div className="flex flex-col gap-0.5 rounded-md">
-                  {userList!.groups.map((groupinfo) => (
+                  {groups.map((item) => (
                     <SideBarListItem
-                      key={groupinfo.id}
-                      {...groupinfo}
+                      key={item.id}
+                      latestMessage="hi"
+                      time={new Date("2026-01-01T00:00:00")}
+                      {...item}
                       onClick={handleItemClick}
                     />
                   ))}

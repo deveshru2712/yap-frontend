@@ -2,12 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const useSearchUsername = (username: string) => {
-  return useQuery({
-    enabled: !!username,
-    queryKey: ["searchUser", username],
+export const useSearch = (queryData: string) => {
+  return useQuery<SearchConversationResult>({
+    enabled: !!queryData,
+    queryKey: ["search", queryData],
     queryFn: async () => {
-      const res = await fetch(`${API_URL}/v1/api/user?username=${username}`, {
+      const res = await fetch(`${API_URL}/v1/api/user?query=${queryData}`, {
         credentials: "include",
       });
 
@@ -16,7 +16,7 @@ export const useSearchUsername = (username: string) => {
       }
 
       const { data } = await res.json();
-      return data as recentConversation[];
+      return data;
     },
   });
 };

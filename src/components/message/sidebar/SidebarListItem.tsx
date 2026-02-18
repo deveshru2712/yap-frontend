@@ -5,24 +5,26 @@ import { useMessageStore } from "@/stores/message-store";
 import { formatMessageTime } from "@/utils/formatMessageTime";
 
 interface UserListItemProps {
-  username: string;
+  name: string;
   avatar?: string;
   latestMessage: string;
   time: Date;
+  type: "direct" | "group";
   onClick: () => void;
 }
 
 export default function SideBarListItem({
-  username,
+  name,
   avatar,
-  latestMessage = "hi",
-  time = new Date("2026-01-01T00:00:00"),
+  latestMessage,
+  time,
   onClick,
+  // type
 }: UserListItemProps) {
   const { setMessageContext } = useMessageStore();
 
   const handleClick = () => {
-    setMessageContext({ username, avatar });
+    setMessageContext({ name, avatar });
     onClick();
   };
 
@@ -47,12 +49,12 @@ export default function SideBarListItem({
 
         {/* Content */}
         <div className="flex w-full items-start justify-between">
-          <div className="flex flex-col overflow-hidden">
-            <h4 className="truncate font-medium">{username}</h4>
+          <div className="flex flex-col overflow-hidden items-start">
+            <h4 className="truncate font-medium">{name}</h4>
             <p className="truncate text-sm text-neutral-600">{latestMessage}</p>
           </div>
 
-          <div className="text-sm font-medium text-neutral-700">
+          <div className="text-sm text-neutral-500">
             {formatMessageTime(time)}
           </div>
         </div>

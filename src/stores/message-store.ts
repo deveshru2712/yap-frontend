@@ -14,7 +14,7 @@ export const useMessageStore = create<MessageStoreType>((set) => ({
   messageContext: {
     receiverId: null,
     avatar: null,
-    username: null,
+    name: null,
     content: null,
   },
   setMessageContext: (data) =>
@@ -28,7 +28,7 @@ export const useMessageStore = create<MessageStoreType>((set) => ({
     set({
       messageContext: {
         receiverId: null,
-        username: null,
+        name: null,
         avatar: null,
         content: null,
       },
