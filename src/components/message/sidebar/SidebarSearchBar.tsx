@@ -17,7 +17,7 @@ export default function SidebarSearchBar({
     useUserStore();
 
   return (
-    <div className={cn("w-full p-1", className)}>
+    <div className={cn("w-full md:p-1 py-0", className)}>
       <div className="flex w-full items-center justify-between gap-1 rounded-md bg-neutral-100 px-2 py-1 text-neutral-700">
         <div className="flex flex-1 items-center">
           <Search />

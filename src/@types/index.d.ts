@@ -6,7 +6,7 @@ interface User {
 
 interface recentConversation extends User {
   username: string;
-  profilepic: string;
+  avatar: string;
   latestMessage: string;
   time: Date;
 }
@@ -14,6 +14,6 @@ interface recentConversation extends User {
 interface MessageContext {
   receiverId: string | null;
   username: string | null;
-  profilepic: string | null;
+  avatar: string | null;
   content: string | null;
 }

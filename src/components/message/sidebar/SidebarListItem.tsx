@@ -6,7 +6,7 @@ import { formatMessageTime } from "@/utils/formatMessageTime";
 
 interface UserListItemProps {
   username: string;
-  profilepic?: string;
+  avatar?: string;
   latestMessage: string;
   time: Date;
   onClick: () => void;
@@ -14,7 +14,7 @@ interface UserListItemProps {
 
 export default function SideBarListItem({
   username,
-  profilepic,
+  avatar,
   latestMessage = "hi",
   time = new Date("2026-01-01T00:00:00"),
   onClick,
@@ -22,7 +22,7 @@ export default function SideBarListItem({
   const { setMessageContext } = useMessageStore();
 
   const handleClick = () => {
-    setMessageContext({ username, profilepic });
+    setMessageContext({ username, avatar });
     onClick();
   };
 
@@ -34,9 +34,9 @@ export default function SideBarListItem({
       <div className="flex items-center gap-2">
         {/* Avatar */}
         <div className="h-10 aspect-square flex items-center justify-center rounded-full bg-neutral-100">
-          {profilepic ? (
+          {avatar ? (
             <Image
-              src={profilepic}
+              src={avatar}
               alt="profile picture"
               className="object-cover"
             />

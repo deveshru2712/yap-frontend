@@ -5,19 +5,17 @@ import { useMessageStore } from "@/stores/message-store";
 
 export default function ChatHeader() {
   const { messageContext } = useMessageStore();
-  const { username, profilepic } = messageContext;
+  const { username, avatar } = messageContext;
   return (
     <div className="w-full shrink-0 border-b p-1">
       <div className="flex items-center gap-3">
         {/* Avatar */}
-        <div className="flex items-center justify-center rounded-full bg-neutral-100">
-          {profilepic ? (
+        <div className="h-10 aspect-square flex items-center justify-center rounded-full bg-neutral-100">
+          {avatar ? (
             <Image
-              src={profilepic}
+              src={avatar}
               alt="profile picture"
-              width={40}
-              height={40}
-              className="h-8 w-8 rounded-full object-cover"
+              className="object-cover"
             />
           ) : (
             <User size={20} />

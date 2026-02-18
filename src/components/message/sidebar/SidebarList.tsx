@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useRef } from "react";
 import SideBarListItem from "@/components/message/sidebar/SidebarListItem";
 import SidebarListItemSkeleton from "@/components/message/skeleton/SidebarListItemSkeleton";
@@ -17,8 +18,10 @@ export default function SidebarList({ className, onClose }: SidebarListProps) {
   const { searchUserName } = useUserStore();
   const debouncedSearch = useDebounce(searchUserName || "");
   const { data: userList, isFetching } = useSearchUsername(debouncedSearch);
+
   const listRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useIsMobile();
+
   useEffect(() => {
     if (!isMobile) return;
 
@@ -53,26 +56,52 @@ export default function SidebarList({ className, onClose }: SidebarListProps) {
         className
       )}
     >
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-2">
+        {/* Loading State */}
         {isFetching || isTyping ? (
           <div className="flex flex-col gap-0.5 rounded-md">
             <SidebarListItemSkeleton />
             <SidebarListItemSkeleton />
             <SidebarListItemSkeleton />
           </div>
-        ) : userList && userList.length > 0 ? (
-          <div className="flex flex-col gap-0.5 rounded-md">
-            {userList.map((userinfo) => (
-              <SideBarListItem
-                key={userinfo.id}
-                {...userinfo}
-                onClick={handleItemClick}
-              />
-            ))}
+        ) : userList &&
+          (userList.users.length > 0 || userList.groups.length > 0) ? (
+          <div className="flex flex-col">
+            {/* Users Section */}
+            {userList.users.length > 0 && (
+              <div className="flex flex-col">
+                <h3 className="text-muted-foreground p-1 text-sm">Users</h3>
+                <div className="flex flex-col gap-0.5 rounded-md">
+                  {userList!.users.map((userinfo) => (
+                    <SideBarListItem
+                      key={userinfo.id}
+                      {...userinfo}
+                      onClick={handleItemClick}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Groups Section */}
+            {userList.groups.length > 0 && (
+              <div className="flex flex-col">
+                <h3 className="text-muted-foreground p-1 text-sm">Groups</h3>
+                <div className="flex flex-col gap-0.5 rounded-md">
+                  {userList!.groups.map((groupinfo) => (
+                    <SideBarListItem
+                      key={groupinfo.id}
+                      {...groupinfo}
+                      onClick={handleItemClick}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         ) : (
           <div className="text-muted-foreground p-2 text-sm">
-            No users found for "{debouncedSearch}"
+            No results found for "{debouncedSearch}"
           </div>
         )}
       </div>

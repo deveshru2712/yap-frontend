@@ -13,7 +13,7 @@ type MessageStoreType = MessageStoreState & MessageStoreActions;
 export const useMessageStore = create<MessageStoreType>((set) => ({
   messageContext: {
     receiverId: null,
-    profilepic: null,
+    avatar: null,
     username: null,
     content: null,
   },
@@ -29,7 +29,7 @@ export const useMessageStore = create<MessageStoreType>((set) => ({
       messageContext: {
         receiverId: null,
         username: null,
-        profilepic: null,
+        avatar: null,
         content: null,
       },
     }),
