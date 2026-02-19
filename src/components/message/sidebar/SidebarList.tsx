@@ -15,10 +15,10 @@ interface SidebarListProps {
 }
 
 export default function SidebarList({ className, onClose }: SidebarListProps) {
-  const { query } = useUserStore();
+  const { query, searchResult: data } = useUserStore();
   const debouncedSearch = useDebounce(query || "");
 
-  const { data, isFetching } = useSearch(debouncedSearch);
+  const { isFetching } = useSearch(debouncedSearch);
 
   const listRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useIsMobile();
@@ -81,7 +81,7 @@ export default function SidebarList({ className, onClose }: SidebarListProps) {
                 <div className="flex flex-col gap-0.5 rounded-md">
                   {directUsers.map((item) => (
                     <SideBarListItem
-                      key={item.id}
+                      key={item.conversationId}
                       latestMessage="hi"
                       time={new Date("2026-01-01T00:00:00")}
                       {...item}
@@ -99,7 +99,7 @@ export default function SidebarList({ className, onClose }: SidebarListProps) {
                 <div className="flex flex-col gap-0.5 rounded-md">
                   {groups.map((item) => (
                     <SideBarListItem
-                      key={item.id}
+                      key={item.conversationId}
                       latestMessage="hi"
                       time={new Date("2026-01-01T00:00:00")}
                       {...item}

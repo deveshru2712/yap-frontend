@@ -1,9 +1,12 @@
+"use client";
 import { useQuery } from "@tanstack/react-query";
+import { useUserStore } from "@/stores/search-store";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const useSearch = (queryData: string) => {
-  return useQuery<SearchConversationResult>({
+  const { setSearchResult } = useUserStore();
+  return useQuery({
     enabled: !!queryData,
     queryKey: ["search", queryData],
     queryFn: async () => {
@@ -16,7 +19,8 @@ export const useSearch = (queryData: string) => {
       }
 
       const { data } = await res.json();
-      return data;
+      data as SearchConversationResult[];
+      setSearchResult(data);
     },
   });
 };

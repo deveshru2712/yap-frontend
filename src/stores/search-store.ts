@@ -3,13 +3,13 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 interface UserStoreState {
   query: string | null;
-  searchResult: recentConversation[];
+  searchResult: SearchConversationResult | null;
 }
 
 interface UserStoreActions {
   setQuery: (data: string) => void;
   clearSearchUserName: () => void;
-  setSearchResult: (recentConvoList: recentConversation[]) => void;
+  setSearchResult: (recentConvoList: SearchConversationResult) => void;
 }
 
 type UserStoreTypes = UserStoreState & UserStoreActions;
@@ -18,22 +18,22 @@ export const useUserStore = create<UserStoreTypes>()(
   persist(
     (set) => ({
       query: null,
-      searchResult: [],
+      searchResult: null,
       setQuery: (username) => {
         set({ query: username });
       },
       clearSearchUserName: () => {
-        set({ query: null, searchResult: [] });
+        set({ query: null, searchResult: null });
       },
       setSearchResult: (list) => {
         set({ searchResult: list });
       },
     }),
     {
-      name: "search-user-storage",
+      name: "search-query-storage",
       partialize: (state) => ({
-        searchUserName: state.query,
-        recentConvoList: state.searchResult,
+        query: state.query,
+        searchResult: state.searchResult,
       }),
       storage: createJSONStorage(() => sessionStorage),
     }

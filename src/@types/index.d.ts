@@ -4,18 +4,12 @@ interface User {
   username: string;
 }
 
-interface recentConversation extends User {
-  username: string;
-  avatar: string;
-  latestMessage: string;
-  time: Date;
-}
-
 interface Conversation {
-  id: string;
+  id?: string;
   name: string;
   avatar: string;
   type: "direct" | "group";
+  conversationId: string;
 }
 
 interface SearchConversationResult {
