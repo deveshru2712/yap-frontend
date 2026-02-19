@@ -1,14 +1,13 @@
-"use client";
 import { useQuery } from "@tanstack/react-query";
-import { useUserStore } from "@/stores/search-store";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const useSearch = (queryData: string) => {
-  const { setSearchResult } = useUserStore();
-  return useQuery({
+  return useQuery<SearchConversationResult>({
     enabled: !!queryData,
     queryKey: ["search", queryData],
+    // for caching the result
+    staleTime: 1000 * 30, // 30 seconds
     queryFn: async () => {
       const res = await fetch(`${API_URL}/v1/api/user?query=${queryData}`, {
         credentials: "include",
@@ -19,8 +18,7 @@ export const useSearch = (queryData: string) => {
       }
 
       const { data } = await res.json();
-      data as SearchConversationResult[];
-      setSearchResult(data);
+      return data;
     },
   });
 };

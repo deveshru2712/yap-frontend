@@ -33,7 +33,6 @@ export const useUserStore = create<UserStoreTypes>()(
       name: "search-query-storage",
       partialize: (state) => ({
         query: state.query,
-        searchResult: state.searchResult,
       }),
       storage: createJSONStorage(() => sessionStorage),
     }

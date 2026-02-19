@@ -5,7 +5,7 @@ import SideBarListItem from "@/components/message/sidebar/SidebarListItem";
 import SidebarListItemSkeleton from "@/components/message/skeleton/SidebarListItemSkeleton";
 import { useDebounce } from "@/hooks/use-debounce";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useSearch } from "@/hooks/use-searchuser";
+import { useSearch } from "@/hooks/use-search-query";
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/stores/search-store";
 
@@ -15,10 +15,10 @@ interface SidebarListProps {
 }
 
 export default function SidebarList({ className, onClose }: SidebarListProps) {
-  const { query, searchResult: data } = useUserStore();
+  const { query } = useUserStore();
   const debouncedSearch = useDebounce(query || "");
 
-  const { isFetching } = useSearch(debouncedSearch);
+  const { data, isFetching } = useSearch(debouncedSearch);
 
   const listRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useIsMobile();
