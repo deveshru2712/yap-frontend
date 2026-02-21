@@ -5,11 +5,11 @@ interface User {
 }
 
 interface Conversation {
-  id?: string;
+  id: string | null;
   name: string;
-  avatar: string;
+  avatar: string | null;
   type: "direct" | "group";
-  conversationId: string;
+  conversationId: string | null;
 }
 
 interface SearchConversationResult {
@@ -17,9 +17,19 @@ interface SearchConversationResult {
   groups: Conversation[];
 }
 
-interface MessageContext {
-  receiverId: string | null;
+interface Message {
+  id: string;
+  conversationId: string;
+  senderId: string;
+  content: string;
+  createdAt: string;
+}
+
+interface conversationContext {
+  // optional as when we are talking in a group receiverId should be null
+  receiverId?: string | null;
+  // optional in case if we are chating for the first time
+  conversationId?: string | null;
   name: string | null;
   avatar: string | null;
-  content: string | null;
 }

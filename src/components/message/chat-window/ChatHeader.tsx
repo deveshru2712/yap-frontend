@@ -1,11 +1,11 @@
 "use client";
 import { User } from "lucide-react";
 import Image from "next/image";
-import { useMessageStore } from "@/stores/message-store";
+import { useConversationStore } from "@/stores/conversation-store";
 
 export default function ChatHeader() {
-  const { messageContext } = useMessageStore();
-  const { username, avatar } = messageContext;
+  const { conversationContext } = useConversationStore();
+  const { name, avatar } = conversationContext;
   return (
     <div className="w-full shrink-0 border-b p-1">
       <div className="flex items-center gap-3">
@@ -23,7 +23,7 @@ export default function ChatHeader() {
         </div>
 
         {/* Username */}
-        <h4 className="font-medium text-neutral-900">{username}</h4>
+        <h4 className="font-medium text-neutral-900">{name}</h4>
       </div>
     </div>
   );

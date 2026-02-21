@@ -4,18 +4,22 @@ import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuthStore } from "@/stores/auth-store";
-import { useMessageStore } from "@/stores/message-store";
+import { useConversationStore } from "@/stores/conversation-store";
 import { useSocketStore } from "@/stores/socket-store";
 
 export default function MessageInput() {
-  const { content, setContent } = useMessageStore();
+  const { conversationContext, setconversationContext } =
+    useConversationStore();
   const { socket } = useSocketStore();
   const { user } = useAuthStore();
 
   const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (socket) {
-      socket.emit("msg", { senderId: user?.id, content });
+      socket.emit("msg", {
+        senderId: user?.id,
+        conversationContext: conversationContext.content,
+      });
       console.log("success");
     }
   };
@@ -24,8 +28,8 @@ export default function MessageInput() {
     <div className="shrink-0">
       <form className="flex gap-2" onSubmit={onSubmitHandler}>
         <Input
-          value={content || ""}
-          onChange={(e) => setContent(e.target.value)}
+          value={conversationContext.content || ""}
+          onChange={(e) => setconversationContext({ content: e.target.value })}
           placeholder="type here ..."
           className={"rounded-sm"}
           type="text"
@@ -34,7 +38,7 @@ export default function MessageInput() {
           type="submit"
           variant={"outline"}
           className="rounded-sm"
-          disabled={!content?.trim()}
+          disabled={!conversationContext.content?.trim()}
         >
           <Send />
         </Button>

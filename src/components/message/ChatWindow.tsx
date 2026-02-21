@@ -2,15 +2,15 @@
 import ChatHeader from "@/components/message/chat-window/ChatHeader";
 import MessageInput from "@/components/message/chat-window/MessageInput";
 import MessageList from "@/components/message/chat-window/MessageList";
-import { useMessageStore } from "@/stores/message-store";
+import { useConversationStore } from "@/stores/conversation-store";
 
 export default function ChatWindow() {
-  const { messageContext } = useMessageStore();
+  const { conversationContext } = useConversationStore();
 
   return (
-    <div className="flex flex-col overflow-hidden p-2 pt-0 md:col-span-2 md:pt-2">
-      {messageContext.username ? (
-        <div className="flex flex-col overflow-hidden px-2">
+    <div className="flex flex-col  h-full overflow-hidden p-2 pt-0 md:col-span-2 md:pt-2">
+      {conversationContext.name ? (
+        <div className="flex flex-1  flex-col overflow-hidden px-2">
           {/* chat header */}
           <ChatHeader />
           {/* message list */}

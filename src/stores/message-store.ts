@@ -1,36 +1,49 @@
 import { create } from "zustand";
 
+
+
 interface MessageStoreState {
-  messageContext: MessageContext;
-}
-interface MessageStoreActions {
-  setMessageContext: (data: Partial<MessageContext>) => void;
-  resetMessageContext: () => void;
+  messagesByConversation: Record<string, Message[]>;
 }
 
-type MessageStoreType = MessageStoreState & MessageStoreActions;
+interface MessageStoreAction {
+  addMessage: (message: Message) => void;
+  setMessages: (conversationId: string, messages: Message[]) => void;
+  clearMessages: (conversationId: string) => void;
+}
+
+type MessageStoreType = MessageStoreState & MessageStoreAction;
 
 export const useMessageStore = create<MessageStoreType>((set) => ({
-  messageContext: {
-    receiverId: null,
-    avatar: null,
-    name: null,
-    content: null,
-  },
-  setMessageContext: (data) =>
+  messagesByConversation: {},
+
+  addMessage: (message) =>
+    set((state) => {
+      const { conversationId } = message;
+
+      const existingMessages =
+        state.messagesByConversation[conversationId] || [];
+
+      return {
+        messagesByConversation: {
+          ...state.messagesByConversation,
+          [conversationId]: [...existingMessages, message],
+        },
+      };
+    }),
+
+  setMessages: (conversationId, messages) =>
     set((state) => ({
-      messageContext: {
-        ...state.messageContext,
-        ...data,
+      messagesByConversation: {
+        ...state.messagesByConversation,
+        [conversationId]: messages,
       },
     })),
-  resetMessageContext: () =>
-    set({
-      messageContext: {
-        receiverId: null,
-        name: null,
-        avatar: null,
-        content: null,
-      },
+
+  clearMessages: (conversationId) =>
+    set((state) => {
+      const updated = { ...state.messagesByConversation };
+      delete updated[conversationId];
+      return { messagesByConversation: updated };
     }),
 }));

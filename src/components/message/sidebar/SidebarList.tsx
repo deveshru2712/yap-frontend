@@ -49,7 +49,6 @@ export default function SidebarList({ className, onClose }: SidebarListProps) {
     }
   };
 
-  // Default to empty arrays to prevent undefined errors
   const directUsers = data?.users ?? [];
   const groups = data?.groups ?? [];
 

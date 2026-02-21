@@ -1,30 +1,42 @@
 "use client";
 import { User } from "lucide-react";
 import Image from "next/image";
-import { useMessageStore } from "@/stores/message-store";
+import { useConversationStore } from "@/stores/conversation-store";
 import { formatMessageTime } from "@/utils/formatMessageTime";
 
-interface UserListItemProps {
+interface SideBarListItemProps {
+  id: string | null;
   name: string;
-  avatar?: string;
-  latestMessage: string;
+  avatar: string | null;
+  latestMessage: string | null;
+  conversationId: string | null;
   time: Date;
   type: "direct" | "group";
   onClick: () => void;
 }
 
 export default function SideBarListItem({
+  id,
   name,
   avatar,
   latestMessage,
   time,
   onClick,
-  // type
-}: UserListItemProps) {
-  const { setMessageContext } = useMessageStore();
+  type,
+  conversationId,
+}: SideBarListItemProps) {
+  const { setconversationContext } = useConversationStore();
 
   const handleClick = () => {
-    setMessageContext({ name, avatar });
+    const data = {
+      receiverId: type === "direct" ? id : null,
+      name,
+      avatar,
+      type,
+      conversationId,
+    };
+    // setting message context
+    setconversationContext(data);
     onClick();
   };
 
