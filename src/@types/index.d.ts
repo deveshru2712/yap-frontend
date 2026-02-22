@@ -5,7 +5,7 @@ interface User {
 }
 
 interface Conversation {
-  id: string | null;
+  userId: string | null;
   name: string;
   avatar: string | null;
   type: "direct" | "group";
@@ -19,10 +19,10 @@ interface SearchConversationResult {
 
 interface Message {
   id: string;
-  conversationId: string;
   senderId: string;
   content: string;
   createdAt: string;
+  conversationId: string;
 }
 
 interface conversationContext {

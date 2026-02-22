@@ -3,14 +3,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useAuthStore } from "@/stores/auth-store";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-interface User {
-  id: string;
-  email: string;
-  username: string;
-}
-
 // Verify session
 export const useVerifySession = () => {
   const { setUser } = useAuthStore();
@@ -18,9 +10,12 @@ export const useVerifySession = () => {
   const query = useQuery({
     queryKey: ["auth", "verify"],
     queryFn: async () => {
-      const res = await fetch(`${API_URL}/v1/api/auth/verify`, {
-        credentials: "include",
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/v1/api/auth/verify`,
+        {
+          credentials: "include",
+        }
+      );
 
       if (!res.ok) throw new Error("Unauthorized");
 
@@ -50,12 +45,15 @@ export const useSignIn = () => {
 
   return useMutation({
     mutationFn: async (data: { email: string; password: string }) => {
-      const res = await fetch(`${API_URL}/v1/api/auth/sign-in`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(data),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/v1/api/auth/sign-in`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(data),
+        }
+      );
 
       if (!res.ok) {
         const error = await res.json();
@@ -83,12 +81,15 @@ export const useSignUp = () => {
       password: string;
       username: string;
     }) => {
-      const res = await fetch(`${API_URL}/v1/api/auth/sign-up`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(data),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/v1/api/auth/sign-up`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(data),
+        }
+      );
 
       if (!res.ok) {
         const error = await res.json();
@@ -111,10 +112,13 @@ export const useLogout = () => {
 
   return useMutation({
     mutationFn: async () => {
-      const res = await fetch(`${API_URL}/v1/api/auth/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/v1/api/auth/logout`,
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
 
       if (!res.ok) throw new Error("Logout failed");
     },
