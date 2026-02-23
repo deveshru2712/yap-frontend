@@ -1,3 +1,8 @@
+interface directMessagePayload {
+  content: string;
+  receiverId: string;
+}
+
 interface User {
   id: string;
   email: string;

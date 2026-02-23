@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchMessage = (conversationId?: string | null) => {
-  return useQuery<Message[]>({
+  return useQuery<Message[] | []>({
     queryKey: ["messages", conversationId],
     enabled: !!conversationId,
     refetchOnWindowFocus: false,
@@ -16,8 +16,8 @@ export const useFetchMessage = (conversationId?: string | null) => {
         throw new Error("Failed to fetch messages");
       }
 
-      const data = await res.json();
-      return data.data;
+      const { result } = await res.json();
+      return result;
     },
   });
 };

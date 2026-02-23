@@ -18,8 +18,8 @@ export const useSearch = (queryData: string) => {
         throw new Error("Failed to search user");
       }
 
-      const { data } = await res.json();
-      return data;
+      const { result } = await res.json();
+      return result;
     },
   });
 };

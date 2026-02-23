@@ -1,45 +1,26 @@
 import { create } from "zustand";
 
 interface MessageStoreState {
-  messagesByConversation: Record<string, Message[]>;
+  messages: Message[] | [];
 }
 
 interface MessageStoreAction {
+  setMessages: (messages: Message[]) => void;
   addMessage: (message: Message) => void;
-  setMessages: (conversationId: string, messages: Message[]) => void;
-  clearMessages: (conversationId: string) => void;
+  clearMessages: () => void;
 }
 
 type MessageStoreType = MessageStoreState & MessageStoreAction;
 
 export const useMessageStore = create<MessageStoreType>((set) => ({
-  messagesByConversation: {},
+  messages: [],
+
+  setMessages: (messages) => set({ messages }),
 
   addMessage: (message) =>
-    set((state) => {
-      const existing =
-        state.messagesByConversation[message.conversationId] || [];
-
-      return {
-        messagesByConversation: {
-          ...state.messagesByConversation,
-          [message.conversationId]: [...existing, message],
-        },
-      };
-    }),
-
-  setMessages: (conversationId, messages) =>
     set((state) => ({
-      messagesByConversation: {
-        ...state.messagesByConversation,
-        [conversationId]: messages,
-      },
+      messages: [...state.messages, message],
     })),
 
-  clearMessages: (conversationId) =>
-    set((state) => {
-      const updated = { ...state.messagesByConversation };
-      delete updated[conversationId];
-      return { messagesByConversation: updated };
-    }),
+  clearMessages: () => set({ messages: [] }),
 }));

@@ -3,22 +3,25 @@ import { Send } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useSendDirectMessage } from "@/hooks/use-send-direct-message";
 import { useConversationStore } from "@/stores/conversation-store";
 
 export default function MessageInput() {
   const [content, setContent] = useState("");
   useConversationStore();
+  const { conversationContext } = useConversationStore();
+  const sendMessage = useSendDirectMessage();
 
   const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // if (socket) {
-    //   socket.emit("msg", {
-    //     senderId: user?.id,
-    //     conversationContext: conversationContext.
-    //   });
-    //   console.log("success");
-    // }
-    console.log(content);
+    if (conversationContext.receiverId) {
+      sendMessage.mutate({
+        content,
+        receiverId: conversationContext.receiverId,
+      });
+    } else {
+      console.log("comming soon");
+    }
   };
 
   return (
@@ -35,7 +38,7 @@ export default function MessageInput() {
           type="submit"
           variant={"outline"}
           className="rounded-sm"
-          disabled={!content.trim()}
+          disabled={!content.trim() || sendMessage.isPending}
         >
           <Send />
         </Button>
