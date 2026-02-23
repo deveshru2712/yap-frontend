@@ -17,15 +17,13 @@ export const useMessageStore = create<MessageStoreType>((set) => ({
 
   addMessage: (message) =>
     set((state) => {
-      const { conversationId } = message;
-
-      const existingMessages =
-        state.messagesByConversation[conversationId] || [];
+      const existing =
+        state.messagesByConversation[message.conversationId] || [];
 
       return {
         messagesByConversation: {
           ...state.messagesByConversation,
-          [conversationId]: [...existingMessages, message],
+          [message.conversationId]: [...existing, message],
         },
       };
     }),
