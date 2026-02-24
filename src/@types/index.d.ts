@@ -1,6 +1,11 @@
 interface directMessagePayload {
   content: string;
   receiverId: string;
+  clientMessageId: string;
+}
+
+interface optimisticMessage extends Message {
+  clientMessageId: string;
 }
 
 interface User {
