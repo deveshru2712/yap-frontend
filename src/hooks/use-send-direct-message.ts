@@ -21,7 +21,7 @@ export const useSendDirectMessage = () => {
         }
       );
 
-      const {result,message,success} = await response.json();
+      const { result, message, success } = await response.json();
 
       if (!response.ok || !success) {
         throw new Error(message || "Failed to send message");

@@ -35,8 +35,6 @@ export default function MessageInput() {
 
       // optimistically updating the UI
       addMessage(newMessage);
-      console.log("new message data",newMessage);
-
       // sending the message
       sendMessage.mutate({
         content,
