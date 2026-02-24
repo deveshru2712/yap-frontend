@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { AuthProvider } from "@/components/provider/auth-provider";
 import QueryProvider from "@/components/provider/query-provider";
+import { SocketProvider } from "@/components/provider/socket-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +32,9 @@ export default function RootLayout({
         className={`${geistSans.className} ${geistMono.variable} overflow-hidden antialiased`}
       >
         <QueryProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <SocketProvider>{children}</SocketProvider>
+          </AuthProvider>
         </QueryProvider>
       </body>
     </html>

@@ -28,7 +28,7 @@ export default function MessageInput() {
       const newMessage: Message = {
         id: clientMessageId,
         content,
-        createdAt: Date.toString(),
+        createdAt: new Date().toISOString(),
         senderId: user.id,
         conversationId: "should_be_replace",
       };
@@ -41,6 +41,7 @@ export default function MessageInput() {
         clientMessageId,
         receiverId: conversationContext.receiverId,
       });
+      setContent("");
     } else {
       console.log("comming soon");
     }

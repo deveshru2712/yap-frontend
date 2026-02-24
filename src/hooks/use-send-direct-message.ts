@@ -32,6 +32,7 @@ export const useSendDirectMessage = () => {
     onSuccess: (result) => {
       // update the message list
       updateMessage(result);
+      console.log(result);
     },
     onError: (_, data) => {
       // remove the message from the list
