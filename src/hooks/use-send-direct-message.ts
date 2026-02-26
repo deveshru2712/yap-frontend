@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+import { useConversationStore } from "@/stores/conversation-store";
 import { useMessageStore } from "@/stores/message-store";
 
 export const useSendDirectMessage = () => {
@@ -32,7 +33,16 @@ export const useSendDirectMessage = () => {
     onSuccess: (result) => {
       // update the message list
       updateMessage(result);
-      console.log(result);
+
+      // set the conversationId if it is not set
+      const { conversationContext, setconversationContext } =
+        useConversationStore.getState();
+
+      if (conversationContext.conversationId == null) {
+        setconversationContext({
+          conversationId: result.conversationId,
+        });
+      }
     },
     onError: (_, data) => {
       // remove the message from the list
