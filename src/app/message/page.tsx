@@ -5,15 +5,16 @@ import Loader from "@/components/Loader";
 import ChatWindow from "@/components/message/ChatWindow";
 import Sidebar from "@/components/message/Sidebar";
 import { useSocket } from "@/hooks/use-socket";
+import { useMessageStore } from "@/stores/message-store";
 
 export default function MessagePage() {
   const { isConnected, socket } = useSocket();
+  const { addMessage } = useMessageStore();
   useEffect(() => {
     if (!socket) return;
 
     const handleNewMessage = (message: Message) => {
-      console.log("New message:", message);
-      // update chat state
+      addMessage(message);
     };
 
     socket.on("new_message", handleNewMessage);
@@ -21,7 +22,7 @@ export default function MessagePage() {
     return () => {
       socket.off("new_message", handleNewMessage);
     };
-  }, [socket]);
+  }, [socket, addMessage]);
 
   return (
     <main className="relative flex h-screen grid-cols-1 flex-col divide-x divide-neutral-200 md:grid md:grid-cols-3">
