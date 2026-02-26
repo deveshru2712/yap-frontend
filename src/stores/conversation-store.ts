@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 interface ConversationStoreState {
   conversationContext: conversationContext;
@@ -10,27 +11,38 @@ interface ConversationStoreActions {
 
 type ConversationStoreType = ConversationStoreState & ConversationStoreActions;
 
-export const useConversationStore = create<ConversationStoreType>((set) => ({
-  conversationContext: {
-    receiverId: null,
-    name: null,
-    avatar: null,
-    conversationId: null,
-  },
-  setconversationContext: (data) =>
-    set((state) => ({
-      conversationContext: {
-        ...state.conversationContext,
-        ...data,
-      },
-    })),
-  resetconversationContext: () =>
-    set({
+export const useConversationStore = create<ConversationStoreType>()(
+  persist(
+    (set, _get) => ({
       conversationContext: {
         receiverId: null,
         name: null,
         avatar: null,
         conversationId: null,
       },
+      setconversationContext: (data) =>
+        set((state) => ({
+          conversationContext: {
+            ...state.conversationContext,
+            ...data,
+          },
+        })),
+      resetconversationContext: () =>
+        set({
+          conversationContext: {
+            receiverId: null,
+            name: null,
+            avatar: null,
+            conversationId: null,
+          },
+        }),
     }),
-}));
+    {
+      name: "conversation-storage",
+      partialize: (state) => ({
+        conversationContext: state.conversationContext,
+      }),
+      storage: createJSONStorage(() => sessionStorage),
+    }
+  )
+);
