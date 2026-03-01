@@ -20,6 +20,8 @@ interface Conversation {
   avatar: string | null;
   type: "direct" | "group";
   conversationId: string | null;
+  latestMessage: string;
+  createdAt: string;
 }
 
 interface SearchConversationResult {

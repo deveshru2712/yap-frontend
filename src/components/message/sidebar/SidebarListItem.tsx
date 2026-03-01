@@ -10,7 +10,7 @@ interface SideBarListItemProps {
   avatar: string | null;
   latestMessage: string | null;
   conversationId: string | null;
-  time: Date;
+  createdAt: string;
   type: "direct" | "group";
   onClick: () => void;
 }
@@ -20,7 +20,7 @@ export default function SideBarListItem({
   name,
   avatar,
   latestMessage,
-  time,
+  createdAt,
   onClick,
   type,
   conversationId,
@@ -67,7 +67,7 @@ export default function SideBarListItem({
           </div>
 
           <div className="text-sm text-neutral-500">
-            {formatMessageTime(time)}
+            {formatMessageTime(createdAt)}
           </div>
         </div>
       </div>

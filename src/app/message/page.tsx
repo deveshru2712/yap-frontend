@@ -5,16 +5,23 @@ import Loader from "@/components/Loader";
 import ChatWindow from "@/components/message/ChatWindow";
 import Sidebar from "@/components/message/Sidebar";
 import { useSocket } from "@/hooks/use-socket";
+import { useConversationStore } from "@/stores/conversation-store";
 import { useMessageStore } from "@/stores/message-store";
 
 export default function MessagePage() {
   const { isConnected, socket } = useSocket();
   const { addMessage } = useMessageStore();
+  const { conversationContext } = useConversationStore();
+
   useEffect(() => {
     if (!socket) return;
 
     const handleNewMessage = (message: Message) => {
-      addMessage(message);
+      if (message.conversationId === conversationContext.conversationId) {
+        addMessage(message);
+      } else {
+        // update the sidebar
+      }
     };
 
     socket.on("new_message", handleNewMessage);
@@ -22,7 +29,7 @@ export default function MessagePage() {
     return () => {
       socket.off("new_message", handleNewMessage);
     };
-  }, [socket, addMessage]);
+  }, [socket, addMessage, conversationContext.conversationId]);
 
   return (
     <main className="relative flex h-screen grid-cols-1 flex-col divide-x divide-neutral-200 md:grid md:grid-cols-3">

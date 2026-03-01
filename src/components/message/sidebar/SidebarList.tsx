@@ -79,10 +79,10 @@ export default function SidebarList({ className, onClose }: SidebarListProps) {
                 <h3 className="text-muted-foreground p-1 text-sm">Users</h3>
                 <div className="flex flex-col gap-0.5 rounded-md">
                   {directUsers.map((item) => (
+                    // will think about it and fix this
                     <SideBarListItem
+                      id={null}
                       key={item.conversationId}
-                      latestMessage="hi"
-                      time={new Date("2026-01-01T00:00:00")}
                       {...item}
                       onClick={handleItemClick}
                     />
@@ -97,10 +97,10 @@ export default function SidebarList({ className, onClose }: SidebarListProps) {
                 <h3 className="text-muted-foreground p-1 text-sm">Groups</h3>
                 <div className="flex flex-col gap-0.5 rounded-md">
                   {groups.map((item) => (
+                    // will think about it and fix this
                     <SideBarListItem
+                      id={null}
                       key={item.conversationId}
-                      latestMessage="hi"
-                      time={new Date("2026-01-01T00:00:00")}
                       {...item}
                       onClick={handleItemClick}
                     />
