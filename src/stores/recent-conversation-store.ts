@@ -10,25 +10,27 @@ interface RecentConversationStoreAction {
   clearRecentConversation: () => void;
 }
 
-type RecentConversationStateTypes = RecentConversationStoreState & RecentConversationStoreAction;
+type RecentConversationStateTypes = RecentConversationStoreState &
+  RecentConversationStoreAction;
 
-export const useRecentConversationStore = create<RecentConversationStateTypes>()(
-  persist(
-    (set) => ({
-      recentConversation: [],
-      updateRecentConversation: (conversation) => {
-        set((state) => ({
-          recentConversation: [...state.recentConversation, conversation],
-        }));
-      },
-      clearRecentConversation: () => set({ recentConversation: [] }),
-    }),
-    {
-      name: "recent-conversation-storage",
-      partialize: (state) => ({
-        recentConversation: state.recentConversation,
+export const useRecentConversationStore =
+  create<RecentConversationStateTypes>()(
+    persist(
+      (set) => ({
+        recentConversation: [],
+        updateRecentConversation: (conversation) => {
+          set((state) => ({
+            recentConversation: [...state.recentConversation, conversation],
+          }));
+        },
+        clearRecentConversation: () => set({ recentConversation: [] }),
       }),
-      storage: createJSONStorage(() => sessionStorage),
-    }
-  )
-);
+      {
+        name: "recent-conversation-storage",
+        partialize: (state) => ({
+          recentConversation: state.recentConversation,
+        }),
+        storage: createJSONStorage(() => sessionStorage),
+      }
+    )
+  );
