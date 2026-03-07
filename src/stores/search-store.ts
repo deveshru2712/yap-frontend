@@ -9,7 +9,7 @@ interface UserSearchStoreState {
 interface UserSearchStoreActions {
   setQuery: (data: string) => void;
   clearSearchUserName: () => void;
-  setSearchResult: (recentConvoList: SearchConversationResult) => void;
+  setSearchResult: (result: SearchConversationResult) => void;
 }
 
 type UserStoreTypes = UserSearchStoreState & UserSearchStoreActions;
@@ -25,8 +25,8 @@ export const useUserSearchStore = create<UserStoreTypes>()(
       clearSearchUserName: () => {
         set({ query: null, searchResult: null });
       },
-      setSearchResult: (list) => {
-        set({ searchResult: list });
+      setSearchResult: (result) => {
+        set({ searchResult: result });
       },
     }),
     {

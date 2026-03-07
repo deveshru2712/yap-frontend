@@ -29,6 +29,8 @@ interface SearchConversationResult {
   groups: Conversation[];
 }
 
+type RecentConversation = SearchConversationResult;
+
 interface Message {
   id: string;
   senderId: string;
