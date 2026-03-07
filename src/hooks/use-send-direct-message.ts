@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+import { fetchWithError } from "@/lib/api";
 import { useConversationStore } from "@/stores/conversation-store";
 import { useMessageStore } from "@/stores/message-store";
 
@@ -10,7 +11,7 @@ export const useSendDirectMessage = () => {
       receiverId,
       clientMessageId,
     }: directMessagePayload) => {
-      const response = await fetch(
+      const data = await fetchWithError(
         `${process.env.NEXT_PUBLIC_API_URL}/v1/api/message/direct/`,
         {
           method: "POST",
@@ -22,19 +23,11 @@ export const useSendDirectMessage = () => {
         }
       );
 
-      const { result, message, success } = await response.json();
-
-      if (!response.ok || !success) {
-        throw new Error(message || "Failed to send message");
-      }
-
-      return result;
+      return data.result;
     },
     onSuccess: (result) => {
-      // update the message list
       updateMessage(result);
 
-      // set the conversationId if it is not set
       const { conversationContext, setconversationContext } =
         useConversationStore.getState();
 
@@ -45,7 +38,6 @@ export const useSendDirectMessage = () => {
       }
     },
     onError: (_, data) => {
-      // remove the message from the list
       removeMessage(data.clientMessageId);
     },
   });

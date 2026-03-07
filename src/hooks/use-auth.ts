@@ -1,6 +1,7 @@
 "use client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { fetchWithError } from "@/lib/api";
 import { useAuthStore } from "@/stores/auth-store";
 
 // Verify session
@@ -10,17 +11,11 @@ export const useVerifySession = () => {
   const query = useQuery({
     queryKey: ["auth", "verify"],
     queryFn: async () => {
-      const res = await fetch(
+      const data = await fetchWithError(
         `${process.env.NEXT_PUBLIC_API_URL}/v1/api/auth/verify`,
-        {
-          credentials: "include",
-        }
+        { credentials: "include" }
       );
-
-      if (!res.ok) throw new Error("Unauthorized");
-
-      const { user } = await res.json();
-      return user as User;
+      return data.user as User;
     },
     retry: false,
     staleTime: 0,
@@ -57,13 +52,16 @@ export const useSignIn = () => {
 
       if (!res.ok) {
         const error = await res.json();
-        throw new Error(error.message || "Login failed");
+        const err = new Error(error.message || "Login failed") as Error & {
+          status: number;
+        };
+        err.status = res.status;
+        throw err;
       }
 
       return res.json();
     },
     onSuccess: async () => {
-      // Refetch verify query which will update the user in store
       await queryClient.refetchQueries({
         queryKey: ["auth", "verify"],
       });
@@ -82,7 +80,7 @@ export const useSignUp = () => {
       username: string;
     }) => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/v1/api/auth/sign-up`,
+        `${process.env.NEXT_PUBLIC_API_URL}/v1/api/auth/sign-in`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -93,7 +91,11 @@ export const useSignUp = () => {
 
       if (!res.ok) {
         const error = await res.json();
-        throw new Error(error.message || "Signup failed");
+        const err = new Error(error.message || "Signup failed") as Error & {
+          status: number;
+        };
+        err.status = res.status;
+        throw err;
       }
 
       return res.json();
@@ -112,15 +114,10 @@ export const useLogout = () => {
 
   return useMutation({
     mutationFn: async () => {
-      const res = await fetch(
+      await fetchWithError(
         `${process.env.NEXT_PUBLIC_API_URL}/v1/api/auth/logout`,
-        {
-          method: "POST",
-          credentials: "include",
-        }
+        { method: "POST", credentials: "include" }
       );
-
-      if (!res.ok) throw new Error("Logout failed");
     },
     onSuccess: () => {
       logOut();

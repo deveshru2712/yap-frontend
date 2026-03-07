@@ -1,20 +1,20 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-interface UserStoreState {
+interface UserSearchStoreState {
   query: string | null;
   searchResult: SearchConversationResult | null;
 }
 
-interface UserStoreActions {
+interface UserSearchStoreActions {
   setQuery: (data: string) => void;
   clearSearchUserName: () => void;
   setSearchResult: (recentConvoList: SearchConversationResult) => void;
 }
 
-type UserStoreTypes = UserStoreState & UserStoreActions;
+type UserStoreTypes = UserSearchStoreState & UserSearchStoreActions;
 
-export const useUserStore = create<UserStoreTypes>()(
+export const useUserSearchStore = create<UserStoreTypes>()(
   persist(
     (set) => ({
       query: null,

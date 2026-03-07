@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { useConversationStore } from "./conversation-store";
+import { useUserSearchStore } from "./search-store";
 
 interface AuthStoreState {
   user: User | null;
@@ -24,7 +26,11 @@ export const useAuthStore = create<AuthStoreTypes>()(
         set({ user, isAuthenticated: !!user, hasCheckedAuthStatus: true });
       },
       logOut: () => {
+        const { resetconversationContext } = useConversationStore();
+        const { clearSearchUserName } = useUserSearchStore();
         set({ user: null, isAuthenticated: false, hasCheckedAuthStatus: true });
+        resetconversationContext();
+        clearSearchUserName();
       },
     }),
     {

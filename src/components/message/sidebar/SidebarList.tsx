@@ -7,7 +7,7 @@ import { useDebounce } from "@/hooks/use-debounce";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useSearch } from "@/hooks/use-search-query";
 import { cn } from "@/lib/utils";
-import { useUserStore } from "@/stores/search-store";
+import { useUserSearchStore } from "@/stores/search-store";
 
 interface SidebarListProps {
   className?: string;
@@ -15,7 +15,7 @@ interface SidebarListProps {
 }
 
 export default function SidebarList({ className, onClose }: SidebarListProps) {
-  const { query } = useUserStore();
+  const { query } = useUserSearchStore();
   const debouncedSearch = useDebounce(query || "");
 
   const { data, isFetching } = useSearch(debouncedSearch);

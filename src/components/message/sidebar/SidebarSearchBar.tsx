@@ -2,7 +2,7 @@
 import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { useUserStore } from "@/stores/search-store";
+import { useUserSearchStore } from "@/stores/search-store";
 
 interface SidebarSearchBarProps {
   className?: string;
@@ -13,7 +13,7 @@ export default function SidebarSearchBar({
   className,
   onFocus,
 }: SidebarSearchBarProps) {
-  const { query, setQuery, clearSearchUserName } = useUserStore();
+  const { query, setQuery, clearSearchUserName } = useUserSearchStore();
 
   return (
     <div className={cn("w-full md:p-1 py-0", className)}>
