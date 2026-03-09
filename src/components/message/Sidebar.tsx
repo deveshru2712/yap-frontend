@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
+import RecentConversationList from "@/components/message/sidebar/RecentConversationList";
+import SearchConversationList from "@/components/message/sidebar/SearchConversationList";
 import SidebarHeader from "@/components/message/sidebar/SidebarHeader";
-import SidebarList from "@/components/message/sidebar/SidebarList";
 import SidebarSearchBar from "@/components/message/sidebar/SidebarSearchBar";
 import { useUserSearchStore } from "@/stores/search-store";
 
@@ -18,8 +19,10 @@ export default function Sidebar() {
       <SidebarSearchBar onFocus={() => setShowList(true)} />
 
       {/* List Section - Scrollable */}
-      {showList && query?.trim() && (
-        <SidebarList onClose={() => setShowList(false)} />
+      {showList && query?.trim() ? (
+        <SearchConversationList onClose={() => setShowList(false)} />
+      ) : (
+        <RecentConversationList />
       )}
     </div>
   );

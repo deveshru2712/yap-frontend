@@ -14,19 +14,28 @@ interface User {
   username: string;
 }
 
-interface Conversation {
-  userId: string | null;
+interface DirectConversation {
+  userId: string;
   name: string;
   avatar: string | null;
-  type: "direct" | "group";
+  type: "direct";
   conversationId: string | null;
   latestMessage: string;
   createdAt: string;
 }
 
+interface GroupConversation {
+  name: string;
+  avatar: string | null;
+  type: "group";
+  conversationId: string;
+  latestMessage: string;
+  createdAt: string;
+}
+
 interface SearchConversationResult {
-  users: Conversation[];
-  groups: Conversation[];
+  direct: DirectConversation[];
+  group: GroupConversation[];
 }
 
 type RecentConversation = SearchConversationResult;

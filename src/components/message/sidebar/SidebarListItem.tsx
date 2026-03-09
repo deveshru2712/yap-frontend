@@ -12,7 +12,7 @@ interface SideBarListItemProps {
   conversationId: string | null;
   createdAt: string;
   type: "direct" | "group";
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export default function SideBarListItem({
@@ -37,7 +37,7 @@ export default function SideBarListItem({
     };
     // setting message context
     setconversationContext(data);
-    onClick();
+    onClick?.();
   };
 
   return (
