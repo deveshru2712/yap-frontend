@@ -35,7 +35,6 @@ export default function SideBarListItem({
       type,
       conversationId,
     };
-    // setting message context
     setconversationContext(data);
     onClick?.();
   };
@@ -55,18 +54,22 @@ export default function SideBarListItem({
               className="object-cover"
             />
           ) : (
-            <User size={20} />
+            <User className="size-4" />
           )}
         </div>
 
         {/* Content */}
         <div className="flex w-full items-start justify-between">
           <div className="flex flex-col overflow-hidden items-start">
-            <h4 className="truncate font-medium">{name}</h4>
-            <p className="truncate text-sm text-neutral-600">{latestMessage}</p>
+            <h4 className="truncate font-medium lg:text-base text-xs">
+              {name}
+            </h4>
+            <p className="truncate  lg:text-base text-xs text-neutral-600">
+              {latestMessage ? latestMessage.slice(0, 15) : "say hii"}
+            </p>
           </div>
 
-          <div className="text-sm text-neutral-500">
+          <div className="text-[10px] text-neutral-500">
             {formatMessageTime(createdAt)}
           </div>
         </div>
