@@ -27,9 +27,6 @@ export default function RecentConversationList({
   const directUsers = data?.direct || [];
   const groups = data?.group || [];
 
-  /**
-   * Populate store once from API
-   */
   useEffect(() => {
     if (isFetching || recentConversation.length > 0) return;
 
