@@ -67,3 +67,8 @@ interface conversationContext {
   name: string | null;
   avatar: string | null;
 }
+
+type Member = {
+  userId: string;
+  name: string;
+};

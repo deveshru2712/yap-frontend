@@ -1,0 +1,167 @@
+"use client";
+
+import { X } from "lucide-react";
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useDebounce } from "@/hooks/use-debounce";
+import { useSearch } from "@/hooks/use-search-query";
+import SidebarListItemSkeleton from "../skeleton/SidebarListItemSkeleton";
+import SideBarListItem from "./SidebarListItem";
+
+export default function FloatingMenu() {
+  const [query, setQuery] = useState<string>("");
+  const [groupName, setGroupName] = useState<string>("");
+  const [members, setMembers] = useState<Member[]>([]);
+
+  const debouncedSearch = useDebounce(query);
+  const { data, isFetching } = useSearch(debouncedSearch);
+
+  const directUsers: DirectConversation[] = data?.direct ?? [];
+
+  const isCreateDisabled = members.length < 1 || groupName.trim() === "";
+  const showResults = debouncedSearch.trim().length > 0;
+
+  const addMember = (user: DirectConversation) => {
+    if (members.some((m) => m.userId === user.userId)) return;
+
+    setMembers((prev) => [
+      ...prev,
+      {
+        userId: user.userId,
+        name: user.name,
+      },
+    ]);
+
+    setQuery("");
+  };
+
+  const removeMember = (userId: string) => {
+    setMembers((prev) => prev.filter((m) => m.userId !== userId));
+  };
+
+  const handleCreateGroup = () => {
+    const payload = {
+      name: groupName.trim(),
+      members: members.map((m) => m.userId),
+    };
+
+    console.log(payload);
+  };
+
+  return (
+    <div className="flex flex-col gap-4 p-4">
+      {/* Group Name */}
+      <div className="space-y-2">
+        <Label className="text-sm font-medium text-muted-foreground">
+          Group Name
+        </Label>
+
+        <Input
+          placeholder="My group..."
+          value={groupName}
+          onChange={(e) => setGroupName(e.target.value)}
+        />
+      </div>
+
+      {/* Group Image */}
+      <div className="space-y-1">
+        <Label className="text-sm font-medium text-muted-foreground">
+          Group Image
+        </Label>
+
+        <div className="flex items-center justify-center h-28 w-full rounded-lg border border-dashed border-muted-foreground/30 bg-muted/40 hover:bg-muted cursor-pointer">
+          <span className="text-sm text-muted-foreground">
+            Upload group image
+          </span>
+        </div>
+      </div>
+
+      {/* Add Members */}
+      <div className="space-y-2">
+        <Label className="text-sm font-medium text-muted-foreground">
+          Add Members
+        </Label>
+
+        {/* Members container */}
+        <div className="min-h-30">
+          {members.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-2">
+              {members.map((member) => (
+                <div
+                  key={member.userId}
+                  className="flex items-center gap-1 bg-muted px-2 py-1 rounded-md text-sm"
+                >
+                  {member.name}
+
+                  <button
+                    onClick={() => removeMember(member.userId)}
+                    className="hover:text-red-500"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Input + dropdown */}
+          <div className="relative">
+            <Input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search users..."
+            />
+
+            {showResults && (
+              <div className="absolute left-0 right-0 top-full mt-1 max-h-48 overflow-y-auto rounded-md border bg-background shadow-md z-50">
+                {isFetching ? (
+                  <div className="p-1 space-y-1">
+                    <SidebarListItemSkeleton />
+                    <SidebarListItemSkeleton />
+                    <SidebarListItemSkeleton />
+                  </div>
+                ) : directUsers.length > 0 ? (
+                  <div className="flex flex-col space-y-1 p-1">
+                    {directUsers.map((user) => {
+                      if (members.some((m) => m.userId === user.userId))
+                        return null;
+
+                      return (
+                        <SideBarListItem
+                          key={user.userId}
+                          id={user.userId}
+                          {...user}
+                          onClick={() => addMember(user)}
+                        />
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="text-muted-foreground text-sm p-2">
+                    No results found for "{debouncedSearch}"
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Buttons */}
+      <div className="flex justify-end gap-2 pt-2">
+        <button className="text-sm px-3 py-2 rounded-md border hover:bg-muted">
+          Cancel
+        </button>
+
+        <button
+          disabled={isCreateDisabled}
+          onClick={handleCreateGroup}
+          className="text-sm px-4 py-2 rounded-md bg-primary text-white hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Create Group ({members.length})
+        </button>
+      </div>
+    </div>
+  );
+}
