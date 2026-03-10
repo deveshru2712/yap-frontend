@@ -1,7 +1,7 @@
 "use client";
 
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useDebounce } from "@/hooks/use-debounce";
@@ -14,13 +14,16 @@ export default function FloatingMenu() {
   const [groupName, setGroupName] = useState<string>("");
   const [members, setMembers] = useState<Member[]>([]);
 
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
   const debouncedSearch = useDebounce(query);
   const { data, isFetching } = useSearch(debouncedSearch);
 
   const directUsers: DirectConversation[] = data?.direct ?? [];
 
   const isCreateDisabled = members.length < 1 || groupName.trim() === "";
-  const showResults = debouncedSearch.trim().length > 0;
+
+  const showResults = query.trim().length > 0;
 
   const addMember = (user: DirectConversation) => {
     if (members.some((m) => m.userId === user.userId)) return;
@@ -48,6 +51,23 @@ export default function FloatingMenu() {
 
     console.log(payload);
   };
+
+  // close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
+
+      if (containerRef.current && !containerRef.current.contains(target)) {
+        setQuery("");
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="flex flex-col gap-4 p-4">
@@ -83,10 +103,9 @@ export default function FloatingMenu() {
           Add Members
         </Label>
 
-        {/* Members container */}
-        <div className="min-h-30">
+        <div className="min-h-36 flex w-full flex-col">
           {members.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-2">
+            <div className="flex flex-wrap gap-2 m-2">
               {members.map((member) => (
                 <div
                   key={member.userId}
@@ -105,8 +124,8 @@ export default function FloatingMenu() {
             </div>
           )}
 
-          {/* Input + dropdown */}
-          <div className="relative">
+          {/* Search */}
+          <div ref={containerRef} className="relative">
             <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -114,14 +133,14 @@ export default function FloatingMenu() {
             />
 
             {showResults && (
-              <div className="absolute left-0 right-0 top-full mt-1 max-h-48 overflow-y-auto rounded-md border bg-background shadow-md z-50">
+              <div className="absolute left-0 right-0 top-full mt-1.5 max-h-40 overflow-y-auto rounded-md border bg-background shadow-md z-50">
                 {isFetching ? (
                   <div className="p-1 space-y-1">
                     <SidebarListItemSkeleton />
                     <SidebarListItemSkeleton />
                     <SidebarListItemSkeleton />
                   </div>
-                ) : directUsers.length > 0 ? (
+                ) : debouncedSearch.length > 0 && directUsers.length > 0 ? (
                   <div className="flex flex-col space-y-1 p-1">
                     {directUsers.map((user) => {
                       if (members.some((m) => m.userId === user.userId))
@@ -137,11 +156,11 @@ export default function FloatingMenu() {
                       );
                     })}
                   </div>
-                ) : (
+                ) : debouncedSearch.length > 0 ? (
                   <div className="text-muted-foreground text-sm p-2">
                     No results found for "{debouncedSearch}"
                   </div>
-                )}
+                ) : null}
               </div>
             )}
           </div>
