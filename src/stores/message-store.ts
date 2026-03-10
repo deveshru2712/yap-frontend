@@ -7,7 +7,7 @@ interface MessageStoreState {
 interface MessageStoreAction {
   setMessages: (messages: Message[]) => void;
   addMessage: (message: Message) => void;
-  updateMessage: (message: optimisticMessage) => void;
+  updateMessage: (message: OptimisticMessage) => void;
   removeMessage: (messageId: string) => void;
   clearMessages: () => void;
 }

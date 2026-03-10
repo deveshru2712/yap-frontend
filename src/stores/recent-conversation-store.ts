@@ -6,7 +6,8 @@ interface RecentConversationStoreState {
 }
 
 interface RecentConversationStoreAction {
-  updateRecentConversation: (conversation: RecentConversation) => void;
+  setRecentConversation: (conversations: RecentConversation[]) => void;
+  updateRecentConversation: (conversation: SocketMessageData) => void;
   clearRecentConversation: () => void;
 }
 
@@ -18,18 +19,60 @@ export const useRecentConversationStore =
     persist(
       (set) => ({
         recentConversation: [],
+
+        /**
+         * Initial API load
+         */
+        setRecentConversation: (conversations) =>
+          set({
+            recentConversation: conversations.sort(
+              (a, b) =>
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+            ),
+          }),
+
+        /**
+         * Update when new socket message arrives
+         */
         updateRecentConversation: (conversation) => {
-          set((state) => ({
-            recentConversation: [...state.recentConversation, conversation],
-          }));
+          set((state) => {
+            const updatedConversation: RecentConversation = {
+              userId:
+                conversation.type === "group"
+                  ? conversation.conversationId
+                  : conversation.senderId,
+              name: conversation.name,
+              avatar: conversation.avatar,
+              type: conversation.type,
+              conversationId: conversation.conversationId,
+              latestMessage: conversation.content,
+              createdAt: conversation.createdAt,
+            };
+
+            const filtered = state.recentConversation.filter(
+              (c) => c.conversationId !== conversation.conversationId
+            );
+
+            const updatedList = [updatedConversation, ...filtered].sort(
+              (a, b) =>
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+            );
+
+            return {
+              recentConversation: updatedList,
+            };
+          });
         },
-        clearRecentConversation: () => set({ recentConversation: [] }),
+
+        clearRecentConversation: () =>
+          set({
+            recentConversation: [],
+          }),
       }),
       {
         name: "recent-conversation-storage",
-        partialize: (state) => ({
-          recentConversation: state.recentConversation,
-        }),
         storage: createJSONStorage(() => sessionStorage),
       }
     )

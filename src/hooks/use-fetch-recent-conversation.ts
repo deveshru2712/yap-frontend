@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchWithError } from "@/lib/api";
 
 export const useFetchRecentConversation = () => {
-  return useQuery<RecentConversation>({
+  return useQuery<SearchConversationResult>({
     queryKey: ["recentConversation"],
     staleTime: 1000 * 30,
     queryFn: async () => {

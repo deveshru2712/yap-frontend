@@ -5,7 +5,7 @@ import { useConversationStore } from "@/stores/conversation-store";
 import { formatMessageTime } from "@/utils/formatMessageTime";
 
 interface SideBarListItemProps {
-  id: string | null;
+  id?: string;
   name: string;
   avatar: string | null;
   latestMessage: string | null;
@@ -29,7 +29,7 @@ export default function SideBarListItem({
 
   const handleClick = () => {
     const data = {
-      receiverId: type === "direct" ? id : null,
+      receiverId: id,
       name,
       avatar,
       type,

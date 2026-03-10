@@ -4,7 +4,7 @@ interface directMessagePayload {
   clientMessageId: string;
 }
 
-interface optimisticMessage extends Message {
+interface OptimisticMessage extends Message {
   clientMessageId: string;
 }
 
@@ -38,7 +38,7 @@ interface SearchConversationResult {
   group: GroupConversation[];
 }
 
-type RecentConversation = SearchConversationResult;
+type RecentConversation = DirectConversation | GroupConversation;
 
 interface Message {
   id: string;
@@ -46,6 +46,17 @@ interface Message {
   content: string;
   createdAt: string;
   conversationId: string;
+}
+
+interface SocketMessageData {
+  id: string;
+  senderId: string;
+  content: string;
+  createdAt: string;
+  conversationId: string;
+  name: string;
+  avatar: string;
+  type: "direct" | "group";
 }
 
 interface conversationContext {

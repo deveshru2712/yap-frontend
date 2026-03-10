@@ -84,7 +84,7 @@ export default function SearchConversationList({
                   {directUsers.map((item) => (
                     // will think about it and fix this
                     <SideBarListItem
-                      id={null}
+                      id={item.userId}
                       key={item.conversationId}
                       {...item}
                       onClick={handleItemClick}
@@ -102,7 +102,7 @@ export default function SearchConversationList({
                   {groups.map((item) => (
                     // will think about it and fix this
                     <SideBarListItem
-                      id={null}
+                      // id={null}
                       key={item.conversationId}
                       {...item}
                       onClick={handleItemClick}
