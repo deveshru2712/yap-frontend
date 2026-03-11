@@ -78,7 +78,7 @@ export default function SignUpForm() {
               placeholder="jhondoe"
               type="text"
               className="w-full"
-              onChange={(e)=>setUserName(e.target.value)}
+              onChange={(e) => setUserName(e.target.value)}
             />
             <FieldError />
           </Field>
