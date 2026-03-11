@@ -19,6 +19,7 @@ export const useConversationStore = create<ConversationStoreType>()(
         name: null,
         avatar: null,
         conversationId: null,
+        type: "direct",
       },
       setconversationContext: (data) =>
         set((state) => ({
@@ -34,6 +35,7 @@ export const useConversationStore = create<ConversationStoreType>()(
             name: null,
             avatar: null,
             conversationId: null,
+            type: "direct",
           },
         }),
     }),

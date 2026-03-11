@@ -99,6 +99,11 @@ export const useRecentConversationStore = create<RecentConversationStore>()(
     }),
     {
       name: "recent-conversation-storage",
+      partialize: (state) => ({
+        conversations: state.conversations,
+        orderedIds: state.orderedIds,
+        recentConversation: state.recentConversation,
+      }),
       storage: createJSONStorage(() => sessionStorage),
     }
   )

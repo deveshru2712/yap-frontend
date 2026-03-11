@@ -4,6 +4,12 @@ interface directMessagePayload {
   clientMessageId: string;
 }
 
+interface GroupMessagePayload {
+  content: string;
+  clientMessageId: string;
+  conversationId: string;
+}
+
 interface OptimisticMessage extends Message {
   clientMessageId: string;
 }
@@ -56,7 +62,6 @@ interface SocketMessageData {
   createdAt: string;
   conversationId: string;
   senderUserName: string;
-  x;
   name: string;
   avatar: string;
   type: "direct" | "group";
@@ -69,6 +74,7 @@ interface conversationContext {
   conversationId?: string | null;
   name: string | null;
   avatar: string | null;
+  type: "direct" | "group";
 }
 
 type Member = {

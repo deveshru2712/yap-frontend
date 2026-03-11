@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useSendDirectMessage } from "@/hooks/use-send-direct-message";
+import { useSendGroupMessage } from "@/hooks/use-send-group-message";
 import { useAuthStore } from "@/stores/auth-store";
 import { useConversationStore } from "@/stores/conversation-store";
 import { useMessageStore } from "@/stores/message-store";
@@ -14,7 +15,8 @@ export default function MessageInput() {
   useConversationStore();
   const { user } = useAuthStore();
   const { conversationContext } = useConversationStore();
-  const sendMessage = useSendDirectMessage();
+  const sendDirectMessage = useSendDirectMessage();
+  const sendGroupMessage = useSendGroupMessage();
   const { addMessage } = useMessageStore();
 
   if (!user?.id) {
@@ -23,28 +25,48 @@ export default function MessageInput() {
 
   const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const clientMessageId = crypto.randomUUID();
+
+    // sending direct message
     if (conversationContext.receiverId) {
-      const clientMessageId = crypto.randomUUID();
       const newMessage: Message = {
         id: clientMessageId,
         content,
         createdAt: new Date().toISOString(),
+        senderUserName: user.username,
         senderId: user.id,
         conversationId: "should_be_replace",
       };
 
       // optimistically updating the UI
       addMessage(newMessage);
-      // sending the message
-      sendMessage.mutate({
+      sendDirectMessage.mutate({
         content,
         clientMessageId,
         receiverId: conversationContext.receiverId,
       });
-      setContent("");
     } else {
-      console.log("comming soon");
+      // sending group message
+      if (conversationContext.conversationId) {
+        const newMessage: Message = {
+          id: clientMessageId,
+          content: content,
+          createdAt: new Date().toISOString(),
+          senderUserName: user.username,
+          senderId: user.id,
+          conversationId: conversationContext.conversationId,
+        };
+        addMessage(newMessage);
+        sendGroupMessage.mutate({
+          clientMessageId,
+          content,
+          conversationId: conversationContext.conversationId,
+        });
+      } else {
+        console.log("Enternal error please log out");
+      }
     }
+    setContent("");
   };
 
   return (
@@ -61,7 +83,11 @@ export default function MessageInput() {
           type="submit"
           variant={"outline"}
           className="rounded-sm"
-          disabled={!content.trim() || sendMessage.isPending}
+          disabled={
+            !content.trim() ||
+            sendDirectMessage.isPending ||
+            sendGroupMessage.isPending
+          }
         >
           <Send />
         </Button>
