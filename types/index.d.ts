@@ -45,6 +45,7 @@ interface Message {
   senderId: string;
   content: string;
   createdAt: string;
+  senderUserName: string;
   conversationId: string;
 }
 
@@ -54,6 +55,8 @@ interface SocketMessageData {
   content: string;
   createdAt: string;
   conversationId: string;
+  senderUserName: string;
+  x;
   name: string;
   avatar: string;
   type: "direct" | "group";
