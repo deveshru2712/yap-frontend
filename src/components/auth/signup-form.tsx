@@ -1,12 +1,15 @@
 "use client";
 import Link from "next/link";
 import * as React from "react";
+import { useEffect, useState } from "react";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useSignUp } from "@/hooks/use-auth";
+import { useCheckUsername } from "@/hooks/use-check-username";
+import { useDebounce } from "@/hooks/use-debounce";
 
 const schema = z.object({
   username: z.string(),
@@ -19,6 +22,26 @@ type Errors = Record<string, string | string[]>;
 export default function SignUpForm() {
   const { isPending, mutate: signUp } = useSignUp();
   const [errors, setErrors] = React.useState<Errors>({});
+  const [username, setUserName] = useState("");
+
+  const debouncedUsername = useDebounce(username);
+  const { data: isAvailable } = useCheckUsername(debouncedUsername);
+
+  useEffect(() => {
+    if (debouncedUsername.length < 3) return;
+
+    if (isAvailable === false) {
+      setErrors((prev) => ({ ...prev, username: "Username already taken" }));
+    }
+
+    if (isAvailable === true) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors.username;
+        return newErrors;
+      });
+    }
+  }, [isAvailable, debouncedUsername]);
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -30,10 +53,14 @@ export default function SignUpForm() {
       setErrors(fieldErrors as Errors);
       return;
     }
-    // calling the signup function
+
+    if (isAvailable === false) {
+      setErrors({ username: "Username already taken" });
+      return;
+    }
+
     signUp(result.data);
   };
-
   return (
     <div className="flex items-center justify-center">
       <div className="w-full max-w-sm space-y-6">
@@ -51,6 +78,7 @@ export default function SignUpForm() {
               placeholder="jhondoe"
               type="text"
               className="w-full"
+              onChange={(e)=>setUserName(e.target.value)}
             />
             <FieldError />
           </Field>

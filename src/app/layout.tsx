@@ -5,6 +5,7 @@ import "./globals.css";
 import { AuthProvider } from "@/components/provider/auth-provider";
 import QueryProvider from "@/components/provider/query-provider";
 import { SocketProvider } from "@/components/provider/socket-provider";
+import { AnchoredToastProvider, ToastProvider } from "@/components/ui/toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,11 +32,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.className} ${geistMono.variable} overflow-hidden antialiased`}
       >
-        <QueryProvider>
-          <AuthProvider>
-            <SocketProvider>{children}</SocketProvider>
-          </AuthProvider>
-        </QueryProvider>
+        <ToastProvider>
+          <AnchoredToastProvider>
+            <QueryProvider>
+              <AuthProvider>
+                <SocketProvider>{children}</SocketProvider>
+              </AuthProvider>
+            </QueryProvider>
+          </AnchoredToastProvider>
+        </ToastProvider>
       </body>
     </html>
   );

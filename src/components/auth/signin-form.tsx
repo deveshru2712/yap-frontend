@@ -19,19 +19,19 @@ export default function SignInForm() {
   const { isPending, mutate: signIn } = useSignIn();
   const [errors, setErrors] = React.useState<Errors>({});
 
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const result = schema.safeParse(Object.fromEntries(formData));
+  async function submitForm(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const res = schema.safeParse(Object.fromEntries(formData));
 
-    if (!result.success) {
-      const { fieldErrors } = z.flattenError(result.error);
-      setErrors(fieldErrors as Errors);
+    if (!res.success) {
+      const { fieldErrors } = z.flattenError(res.error);
+      setErrors(fieldErrors);
       return;
     }
-    // calling the signin function
-    signIn(result.data);
-  };
+    setErrors({});
+    signIn(res.data);
+  }
 
   return (
     <div className="flex items-center justify-center">
@@ -42,7 +42,7 @@ export default function SignInForm() {
             Enter your email below to login to your account
           </p>
         </div>
-        <Form className="space-y-4" errors={errors} onSubmit={onSubmit}>
+        <Form className="space-y-4" errors={errors} onSubmit={submitForm}>
           <Field name="email">
             <FieldLabel>Email</FieldLabel>
             <Input
