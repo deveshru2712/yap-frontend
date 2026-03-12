@@ -18,7 +18,7 @@ export default function SearchConversationList({
   className,
   onClose,
 }: SearchConversationListProps) {
-  const { query } = useUserSearchStore();
+  const { query, clearSearchUserName } = useUserSearchStore();
   const debouncedSearch = useDebounce(query || "");
 
   const { data, isFetching } = useSearch(debouncedSearch);
@@ -48,6 +48,7 @@ export default function SearchConversationList({
 
   const handleItemClick = () => {
     if (isMobile) {
+      clearSearchUserName();
       onClose();
     }
   };
@@ -61,7 +62,7 @@ export default function SearchConversationList({
     <div
       ref={listRef}
       className={cn(
-        "absolute inset-x-0 top-full z-10 mx-auto mt-1 w-[95%] rounded-sm border bg-white p-2 shadow-lg",
+        "absolute inset-x-0 top-full z-30 mx-auto mt-1 w-[95%] rounded-sm border bg-white p-2 shadow-lg",
         "md:static md:w-full lg:border-none lg:shadow-none",
         className
       )}
@@ -82,7 +83,6 @@ export default function SearchConversationList({
                 <h3 className="text-muted-foreground p-1 text-sm">Users</h3>
                 <div className="flex flex-col gap-0.5 rounded-md">
                   {directUsers.map((item) => (
-                    // will think about it and fix this
                     <SideBarListItem
                       id={item.userId}
                       key={item.conversationId}
@@ -100,9 +100,7 @@ export default function SearchConversationList({
                 <h3 className="text-muted-foreground p-1 text-sm">Groups</h3>
                 <div className="flex flex-col gap-0.5 rounded-md">
                   {groups.map((item) => (
-                    // will think about it and fix this
                     <SideBarListItem
-                      // id={null}
                       key={item.conversationId}
                       {...item}
                       onClick={handleItemClick}
