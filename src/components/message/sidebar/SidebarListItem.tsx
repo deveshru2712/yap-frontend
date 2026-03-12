@@ -4,6 +4,7 @@ import { User } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useConversationStore } from "@/stores/conversation-store";
+import { useStatusStore } from "@/stores/status-store";
 import { formatMessageTime } from "@/utils/formatMessageTime";
 
 interface SideBarListItemProps {
@@ -30,6 +31,8 @@ export default function SideBarListItem({
   const { setconversationContext, conversationContext } =
     useConversationStore();
 
+  const { onlineUsers } = useStatusStore();
+
   const handleClick = () => {
     const data = {
       receiverId: id,
@@ -43,15 +46,17 @@ export default function SideBarListItem({
     onClick?.();
   };
 
-  const isActive = conversationContext.name === name;
+  const isActive = conversationContext.conversationId === conversationId;
+
+  const isOnline = id ? onlineUsers.has(id) : false;
 
   return (
     <button
       onClick={handleClick}
       className={cn(
-        "w-full cursor-pointer rounded-md px-3 py-2 transition-colors duration-200",
-        "bg-white hover:bg-blue-50",
-        isActive && "bg-blue-600 hover:bg-blue-700 transition-all duration-200"
+        "w-full cursor-pointer border-none rounded-md px-3 py-2 transition-all duration-200",
+        "bg-blue-50 hover:bg-blue-100",
+        isActive && "bg-blue-500 hover:bg-blue-500/90"
       )}
     >
       <div className="flex items-center gap-3">
@@ -69,6 +74,11 @@ export default function SideBarListItem({
             <div className="flex h-full w-full items-center justify-center">
               <User className="size-5 text-neutral-600" />
             </div>
+          )}
+
+          {/* Online indicator */}
+          {type === "direct" && isOnline && (
+            <span className="absolute bottom-1.5 right-2 animate-pulse h-2.5 w-2.5 rounded-full bg-green-500 border-2 border-white" />
           )}
         </div>
 

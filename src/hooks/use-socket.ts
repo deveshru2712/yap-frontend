@@ -2,11 +2,23 @@
 
 import { useEffect } from "react";
 import { io } from "socket.io-client";
+import { useConversationStore } from "@/stores/conversation-store";
+import { useMessageStore } from "@/stores/message-store";
+import { useRecentConversationStore } from "@/stores/recent-conversation-store";
 import { useSocketStore } from "@/stores/socket-store";
+import { useStatusStore } from "@/stores/status-store";
 
 export function useSocket() {
   const { socket, setSocket, isConnected, setIsConnected } = useSocketStore();
 
+  const { addMessage } = useMessageStore();
+  const { conversationContext } = useConversationStore();
+  const { updateRecentConversation } = useRecentConversationStore();
+
+  const { updateOnlineUserList, setTypingUser, removeTypingUser } =
+    useStatusStore();
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: socket should initialize once
   useEffect(() => {
     if (socket) return;
 
@@ -23,7 +35,29 @@ export function useSocket() {
     socketInstance.on("disconnect", () => {
       setIsConnected(false);
     });
-  }, [socket, setSocket, setIsConnected]);
+
+    socketInstance.on("new_message", (message: SocketMessageData) => {
+      updateRecentConversation(message);
+
+      if (message.conversationId === conversationContext.conversationId) {
+        addMessage(message);
+      }
+    });
+
+    socketInstance.on("online_users", updateOnlineUserList);
+
+    socketInstance.on("typing", ({ userId }: { userId: string }) => {
+      setTypingUser(userId);
+    });
+
+    socketInstance.on("stop_typing", ({ userId }: { userId: string }) => {
+      removeTypingUser(userId);
+    });
+
+    return () => {
+      socketInstance.disconnect();
+    };
+  }, []);
 
   return { socket, isConnected };
 }

@@ -2,32 +2,51 @@
 import { Send } from "lucide-react";
 import { redirect } from "next/navigation";
 import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
 import { useSendDirectMessage } from "@/hooks/use-send-direct-message";
 import { useSendGroupMessage } from "@/hooks/use-send-group-message";
+
 import { useAuthStore } from "@/stores/auth-store";
 import { useConversationStore } from "@/stores/conversation-store";
 import { useMessageStore } from "@/stores/message-store";
+import { useSocketStore } from "@/stores/socket-store";
 
 export default function MessageInput() {
   const [content, setContent] = useState("");
-  useConversationStore();
+
   const { user } = useAuthStore();
   const { conversationContext } = useConversationStore();
+  const { addMessage } = useMessageStore();
+  const { socket } = useSocketStore();
+
   const sendDirectMessage = useSendDirectMessage();
   const sendGroupMessage = useSendGroupMessage();
-  const { addMessage } = useMessageStore();
 
   if (!user?.id) {
     redirect("/sign-in");
   }
 
+  const handleTyping = (value: string) => {
+    setContent(value);
+
+    if (!socket) return;
+
+    // emit typing only for direct chat
+    if (conversationContext.receiverId) {
+      socket.emit("user_typing", {
+        receiverId: conversationContext.receiverId,
+      });
+    }
+  };
+
   const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const clientMessageId = crypto.randomUUID();
 
-    // sending direct message
     if (conversationContext.receiverId) {
       const newMessage: Message = {
         id: clientMessageId,
@@ -38,34 +57,36 @@ export default function MessageInput() {
         conversationId: "should_be_replace",
       };
 
-      // optimistically updating the UI
       addMessage(newMessage);
+
       sendDirectMessage.mutate({
         content,
         clientMessageId,
         receiverId: conversationContext.receiverId,
       });
     } else {
-      // sending group message
       if (conversationContext.conversationId) {
         const newMessage: Message = {
           id: clientMessageId,
-          content: content,
+          content,
           createdAt: new Date().toISOString(),
           senderUserName: user.username,
           senderId: user.id,
           conversationId: conversationContext.conversationId,
         };
+
         addMessage(newMessage);
+
         sendGroupMessage.mutate({
           clientMessageId,
           content,
           conversationId: conversationContext.conversationId,
         });
       } else {
-        console.log("Enternal error please log out");
+        console.log("Internal error please log out");
       }
     }
+
     setContent("");
   };
 
@@ -74,14 +95,15 @@ export default function MessageInput() {
       <form className="flex gap-2" onSubmit={onSubmitHandler}>
         <Input
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+          onChange={(e) => handleTyping(e.target.value)}
           placeholder="type here ..."
-          className={"rounded-sm"}
+          className="rounded-sm"
           type="text"
         />
+
         <Button
           type="submit"
-          variant={"outline"}
+          variant="outline"
           className="rounded-sm"
           disabled={
             !content.trim() ||

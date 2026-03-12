@@ -80,7 +80,6 @@ export default function Navbar() {
                 <span>{user?.username}</span>
               </MenuTrigger>
               <MenuPopup>
-                <MenuItem>Profile Settings</MenuItem>
                 <MenuItem
                   onClick={() => logOut()}
                   className="group flex items-center justify-between gap-2"
