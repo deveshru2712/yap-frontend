@@ -92,7 +92,7 @@ export default function FloatingMenu() {
 
         <div className="flex items-center justify-center h-28 w-full rounded-lg border border-dashed border-muted-foreground/30 bg-muted/40 hover:bg-muted cursor-pointer">
           <span className="text-sm text-muted-foreground">
-            Upload group image
+            Image upload feature coming soon
           </span>
         </div>
       </div>

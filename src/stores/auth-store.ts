@@ -18,7 +18,7 @@ type AuthStoreTypes = AuthStoreState & AuthStoreActions;
 
 export const useAuthStore = create<AuthStoreTypes>()(
   persist(
-    (set, _get) => ({
+    (set) => ({
       user: null,
       isAuthenticated: false,
       hasCheckedAuthStatus: false,
@@ -26,11 +26,19 @@ export const useAuthStore = create<AuthStoreTypes>()(
         set({ user, isAuthenticated: !!user, hasCheckedAuthStatus: true });
       },
       logOut: () => {
-        const { resetconversationContext } = useConversationStore();
-        const { clearSearchUserName } = useUserSearchStore();
-        set({ user: null, isAuthenticated: false, hasCheckedAuthStatus: true });
-        resetconversationContext();
-        clearSearchUserName();
+        // Reset state first
+        set({
+          user: null,
+          isAuthenticated: false,
+          hasCheckedAuthStatus: true,
+        });
+
+        // Clear persisted storage after state update
+        useAuthStore.persist.clearStorage();
+
+        // Reset other stores
+        useConversationStore.getState().resetconversationContext();
+        useUserSearchStore.getState().clearSearchUserName();
       },
     }),
     {

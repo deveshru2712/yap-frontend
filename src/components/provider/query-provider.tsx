@@ -15,6 +15,7 @@ function is401(error: unknown) {
 
 function redirectToLogin() {
   const authRoutes = ["/sign-in", "/sign-up"];
+
   if (!authRoutes.includes(window.location.pathname)) {
     window.location.href = "/sign-in";
   }
@@ -25,15 +26,13 @@ export default function QueryProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { logOut } = useAuthStore();
-
   const [queryClient] = useState(
     () =>
       new QueryClient({
         queryCache: new QueryCache({
           onError: (error) => {
             if (is401(error)) {
-              logOut();
+              useAuthStore.getState().logOut(); // ✅ safe
               redirectToLogin();
             }
           },
@@ -41,7 +40,7 @@ export default function QueryProvider({
         mutationCache: new MutationCache({
           onError: (error) => {
             if (is401(error)) {
-              logOut();
+              useAuthStore.getState().logOut(); // ✅ safe
               redirectToLogin();
             }
           },

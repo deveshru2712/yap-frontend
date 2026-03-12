@@ -1,4 +1,4 @@
-import { ArrowRight, MessageCircle, Users, Video, Zap } from "lucide-react";
+import { ArrowRight, MessageCircle, Users, Zap } from "lucide-react";
 import Link from "next/link";
 import FeauturesCard from "@/components/FeauturesCard";
 import Footer from "@/components/Footer";

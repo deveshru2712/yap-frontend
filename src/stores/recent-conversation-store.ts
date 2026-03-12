@@ -22,10 +22,6 @@ export const useRecentConversationStore = create<RecentConversationStore>()(
       conversations: {},
       orderedIds: [],
       recentConversation: [],
-
-      /**
-       * Initial API load
-       */
       setRecentConversation: (conversations) => {
         const map: Record<string, RecentConversation> = {};
         const ids: string[] = [];
@@ -50,10 +46,6 @@ export const useRecentConversationStore = create<RecentConversationStore>()(
           recentConversation: ordered,
         });
       },
-
-      /**
-       * Socket update
-       */
       updateRecentConversation: (conversation) => {
         set((state) => {
           const id = conversation.conversationId;
@@ -89,7 +81,6 @@ export const useRecentConversationStore = create<RecentConversationStore>()(
           };
         });
       },
-
       clearRecentConversation: () =>
         set({
           conversations: {},

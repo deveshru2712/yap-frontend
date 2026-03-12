@@ -13,7 +13,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useVerifySession();
 
-  const { isAuthenticated, hasCheckedAuthStatus } = useAuthStore();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const hasCheckedAuthStatus = useAuthStore((s) => s.hasCheckedAuthStatus);
 
   useEffect(() => {
     if (!hasCheckedAuthStatus) return;
