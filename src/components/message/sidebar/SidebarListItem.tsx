@@ -13,7 +13,7 @@ interface SideBarListItemProps {
   avatar: string | null;
   latestMessage: string | null;
   conversationId: string | null;
-  createdAt: string;
+  createdAt: string | null;
   type: "direct" | "group";
   onClick?: () => void;
 }
@@ -35,7 +35,7 @@ export default function SideBarListItem({
 
   const handleClick = () => {
     const data = {
-      receiverId: id,
+      receiverId: id ? id : null,
       name,
       avatar,
       type,
@@ -110,7 +110,7 @@ export default function SideBarListItem({
               isActive ? "text-blue-200" : "text-neutral-500"
             )}
           >
-            {formatMessageTime(createdAt)}
+            {createdAt && formatMessageTime(createdAt)}
           </div>
         </div>
       </div>

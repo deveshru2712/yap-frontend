@@ -2,19 +2,28 @@
 
 import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import FloatingMenuListItem from "@/components/message/sidebar/FloatingMenuListItem";
+import SidebarListItemSkeleton from "@/components/message/skeleton/SidebarListItemSkeleton";
+import { DialogClose } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useCreateGroup } from "@/hooks/use-create-group";
 import { useDebounce } from "@/hooks/use-debounce";
 import { useSearch } from "@/hooks/use-search-query";
-import SidebarListItemSkeleton from "../skeleton/SidebarListItemSkeleton";
-import SideBarListItem from "./SidebarListItem";
+import { useRecentConversationStore } from "@/stores/recent-conversation-store";
 
 export default function FloatingMenu() {
   const [query, setQuery] = useState<string>("");
   const [groupName, setGroupName] = useState<string>("");
   const [members, setMembers] = useState<Member[]>([]);
 
+  const { mutate: createGroup } = useCreateGroup();
+  const { setRecentConversation } = useRecentConversationStore();
+
   const containerRef = useRef<HTMLDivElement | null>(null);
+
+  // ref used to close dialog programmatically
+  const closeRef = useRef<HTMLButtonElement | null>(null);
 
   const debouncedSearch = useDebounce(query);
   const { data, isFetching } = useSearch(debouncedSearch);
@@ -22,7 +31,6 @@ export default function FloatingMenu() {
   const directUsers: DirectConversation[] = data?.direct ?? [];
 
   const isCreateDisabled = members.length < 1 || groupName.trim() === "";
-
   const showResults = query.trim().length > 0;
 
   const addMember = (user: DirectConversation) => {
@@ -46,10 +54,22 @@ export default function FloatingMenu() {
   const handleCreateGroup = () => {
     const payload = {
       name: groupName.trim(),
-      members: members.map((m) => m.userId),
+      userId: members.map((m) => m.userId),
     };
 
-    console.log(payload);
+    createGroup(payload, {
+      onSuccess: (data) => {
+        setRecentConversation(data);
+
+        // reset form
+        setMembers([]);
+        setGroupName("");
+        setQuery("");
+
+        // close dialog
+        closeRef.current?.click();
+      },
+    });
   };
 
   // close dropdown on outside click
@@ -71,6 +91,9 @@ export default function FloatingMenu() {
 
   return (
     <div className="flex flex-col gap-4 p-4">
+      {/* hidden dialog close trigger */}
+      <DialogClose ref={closeRef} className="hidden" />
+
       {/* Group Name */}
       <div className="space-y-2">
         <Label className="text-sm font-medium text-muted-foreground">
@@ -147,11 +170,11 @@ export default function FloatingMenu() {
                         return null;
 
                       return (
-                        <SideBarListItem
+                        <FloatingMenuListItem
                           key={user.userId}
                           id={user.userId}
                           {...user}
-                          onClick={() => addMember(user)}
+                          onclick={() => addMember(user)}
                         />
                       );
                     })}
@@ -169,10 +192,13 @@ export default function FloatingMenu() {
 
       {/* Buttons */}
       <div className="flex justify-end gap-2 pt-2">
-        <button className="text-sm px-3 py-2 rounded-md border hover:bg-muted">
-          Cancel
-        </button>
-
+        <DialogClose
+          render={
+            <button className="text-sm px-3 py-2 rounded-md border hover:bg-muted">
+              Cancel
+            </button>
+          }
+        />
         <button
           disabled={isCreateDisabled}
           onClick={handleCreateGroup}

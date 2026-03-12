@@ -124,7 +124,6 @@ export const useLogout = () => {
       return;
     },
     onSuccess: async () => {
-      console.log("success");
       logOut();
       queryClient.clear();
       window.location.href = "/login";

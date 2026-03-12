@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 import { useConversationStore } from "@/stores/conversation-store";
 import { useMessageStore } from "@/stores/message-store";
@@ -17,6 +17,12 @@ export function useSocket() {
 
   const { updateOnlineUserList, setTypingUser, removeTypingUser } =
     useStatusStore();
+
+  const conversationRef = useRef(conversationContext);
+
+  useEffect(() => {
+    conversationRef.current = conversationContext;
+  }, [conversationContext]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: socket should initialize once
   useEffect(() => {
@@ -39,7 +45,7 @@ export function useSocket() {
     socketInstance.on("new_message", (message: SocketMessageData) => {
       updateRecentConversation(message);
 
-      if (message.conversationId === conversationContext.conversationId) {
+      if (message.conversationId === conversationRef.current.conversationId) {
         addMessage(message);
       }
     });

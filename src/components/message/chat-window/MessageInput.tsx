@@ -34,7 +34,6 @@ export default function MessageInput() {
 
     if (!socket) return;
 
-    // emit typing only for direct chat
     if (conversationContext.receiverId) {
       socket.emit("user_typing", {
         receiverId: conversationContext.receiverId,
@@ -47,7 +46,7 @@ export default function MessageInput() {
 
     const clientMessageId = crypto.randomUUID();
 
-    if (conversationContext.receiverId) {
+    if (conversationContext.type === "direct") {
       const newMessage: Message = {
         id: clientMessageId,
         content,
@@ -62,17 +61,17 @@ export default function MessageInput() {
       sendDirectMessage.mutate({
         content,
         clientMessageId,
-        receiverId: conversationContext.receiverId,
+        receiverId: conversationContext.receiverId!,
       });
     } else {
-      if (conversationContext.conversationId) {
+      if (conversationContext.type === "group") {
         const newMessage: Message = {
           id: clientMessageId,
           content,
           createdAt: new Date().toISOString(),
           senderUserName: user.username,
           senderId: user.id,
-          conversationId: conversationContext.conversationId,
+          conversationId: conversationContext.conversationId!,
         };
 
         addMessage(newMessage);
@@ -80,10 +79,10 @@ export default function MessageInput() {
         sendGroupMessage.mutate({
           clientMessageId,
           content,
-          conversationId: conversationContext.conversationId,
+          conversationId: conversationContext.conversationId!,
         });
       } else {
-        console.log("Internal error please log out");
+        console.error("Internal error please log out");
       }
     }
 

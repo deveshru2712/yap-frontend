@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 interface MessageStoreState {
-  messages: Message[] | [];
+  messages: Message[];
 }
 
 interface MessageStoreAction {
@@ -18,9 +18,15 @@ export const useMessageStore = create<MessageStoreType>((set) => ({
   messages: [],
   setMessages: (messages) => set({ messages }),
   addMessage: (message) =>
-    set((state) => ({
-      messages: [...state.messages, message],
-    })),
+    set((state) => {
+      const isDuplicate = state.messages.some(
+        (msg) =>
+          msg.id === message.id ||
+          (message as OptimisticMessage).clientMessageId === msg.id
+      );
+      if (isDuplicate) return state;
+      return { messages: [...state.messages, message] };
+    }),
   updateMessage: (updatedMessage) => {
     set((state) => ({
       messages: state.messages.map((msg) =>

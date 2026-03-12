@@ -1,6 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 import { fetchWithError } from "@/lib/api";
-import { useConversationStore } from "@/stores/conversation-store";
 import { useMessageStore } from "@/stores/message-store";
 
 export const useSendGroupMessage = () => {
@@ -26,15 +25,6 @@ export const useSendGroupMessage = () => {
     },
     onSuccess: (result: OptimisticMessage) => {
       updateMessage(result);
-
-      const { conversationContext, setconversationContext } =
-        useConversationStore.getState();
-
-      if (conversationContext.conversationId == null) {
-        setconversationContext({
-          conversationId: result.conversationId,
-        });
-      }
     },
     onError: (_, data) => {
       removeMessage(data.clientMessageId);

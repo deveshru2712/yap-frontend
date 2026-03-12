@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchWithError } from "@/lib/api";
 
 export const useCheckUsername = (username: string) => {
-  console.log("hook username:", username);
   return useQuery<boolean>({
     queryKey: ["check", username],
     enabled: username.length > 2,
@@ -15,7 +14,6 @@ export const useCheckUsername = (username: string) => {
           credentials: "include",
         }
       );
-      console.log(data);
       return data.available;
     },
   });

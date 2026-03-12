@@ -35,6 +35,7 @@ export default function RecentConversationList({
     isFetching,
     directUsers,
     groups,
+    recentConversation,
     recentConversation.length,
     setRecentConversation,
   ]);
@@ -61,8 +62,13 @@ export default function RecentConversationList({
             {recentConversation.map((item) => (
               <SideBarListItem
                 key={item.conversationId}
+                name={item.name}
                 id={"userId" in item ? item.userId : undefined}
-                {...item}
+                avatar={item.avatar}
+                conversationId={item.conversationId}
+                createdAt={item.createdAt}
+                latestMessage={item.latestMessage}
+                type={item.type}
               />
             ))}
           </div>

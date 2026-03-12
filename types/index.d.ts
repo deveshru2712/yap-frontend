@@ -39,12 +39,24 @@ interface GroupConversation {
   createdAt: string;
 }
 
+interface NewGroupConversation {
+  name: string;
+  avatar: string | null;
+  type: "group";
+  conversationId: string;
+  latestMessage: string | null;
+  createdAt: string | null;
+}
+
 interface SearchConversationResult {
   direct: DirectConversation[];
   group: GroupConversation[];
 }
 
-type RecentConversation = DirectConversation | GroupConversation;
+type RecentConversation =
+  | DirectConversation
+  | GroupConversation
+  | NewGroupConversation;
 
 interface Message {
   id: string;
@@ -65,6 +77,7 @@ interface SocketMessageData {
   name: string;
   avatar: string;
   type: "direct" | "group";
+  clientMessageId: string;
 }
 
 interface conversationContext {
@@ -78,6 +91,11 @@ interface conversationContext {
 }
 
 type Member = {
-  userId: string;
   name: string;
+  userId: string;
 };
+
+interface createGroup {
+  name: string;
+  userId: string[];
+}
