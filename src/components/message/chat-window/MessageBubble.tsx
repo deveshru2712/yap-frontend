@@ -5,14 +5,14 @@ import { isMine } from "@/utils/isMine";
 
 interface MessageBubbleProps {
   senderId: string;
-  senderUsername: string;
+  senderUserName: string;
   content: string;
   createdAt: string;
 }
 
 export default function MessageBubble({
   senderId,
-  senderUsername,
+  senderUserName,
   content,
   createdAt,
 }: MessageBubbleProps) {
@@ -24,7 +24,7 @@ export default function MessageBubble({
         {/* Username (only show for other users) */}
         {!mine && (
           <span className="text-muted-foreground text-xs font-medium px-1">
-            {senderUsername}
+            {senderUserName}
           </span>
         )}
 

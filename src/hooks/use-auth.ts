@@ -1,7 +1,6 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { fetchWithError } from "@/lib/api";
 import { useAuthStore } from "@/stores/auth-store";
@@ -116,8 +115,6 @@ export const useSignUp = () => {
 export const useLogout = () => {
   const logOut = useAuthStore((s) => s.logOut);
   const queryClient = useQueryClient();
-  const router = useRouter();
-
   return useMutation({
     mutationFn: async () => {
       await fetchWithError(

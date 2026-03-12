@@ -1,6 +1,8 @@
 "use client";
+
 import { User } from "lucide-react";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { useConversationStore } from "@/stores/conversation-store";
 import { formatMessageTime } from "@/utils/formatMessageTime";
 
@@ -25,7 +27,8 @@ export default function SideBarListItem({
   type,
   conversationId,
 }: SideBarListItemProps) {
-  const { setconversationContext } = useConversationStore();
+  const { setconversationContext, conversationContext } =
+    useConversationStore();
 
   const handleClick = () => {
     const data = {
@@ -35,41 +38,68 @@ export default function SideBarListItem({
       type,
       conversationId,
     };
+
     setconversationContext(data);
     onClick?.();
   };
 
+  const isActive = conversationContext.name === name;
+
   return (
     <button
       onClick={handleClick}
-      className="w-full cursor-pointer rounded-sm bg-neutral-200/60 px-2 py-1 transition-colors hover:bg-neutral-300/60"
+      className={cn(
+        "w-full cursor-pointer rounded-md px-3 py-2 transition-colors duration-200",
+        "bg-white hover:bg-blue-50",
+        isActive && "bg-blue-600 hover:bg-blue-700 transition-all duration-200"
+      )}
     >
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         {/* Avatar */}
-        <div className="h-10 aspect-square flex items-center justify-center rounded-full bg-neutral-100">
+        <div className="relative h-10 w-10 rounded-full overflow-hidden bg-neutral-200 shrink-0">
           {avatar ? (
             <Image
               src={avatar}
               alt="profile picture"
+              fill
+              sizes="40px"
               className="object-cover"
             />
           ) : (
-            <User className="size-4" />
+            <div className="flex h-full w-full items-center justify-center">
+              <User className="size-5 text-neutral-600" />
+            </div>
           )}
         </div>
 
         {/* Content */}
         <div className="flex w-full items-start justify-between">
           <div className="flex flex-col overflow-hidden items-start">
-            <h4 className="truncate font-medium lg:text-base text-xs">
+            <h4
+              className={cn(
+                "truncate font-medium lg:text-base text-sm",
+                isActive ? "text-white" : "text-neutral-900"
+              )}
+            >
               {name}
             </h4>
-            <p className="truncate  lg:text-base text-xs text-neutral-600">
-              {latestMessage ? latestMessage.slice(0, 15) : "say hii"}
+
+            <p
+              className={cn(
+                "truncate lg:text-sm text-xs",
+                isActive ? "text-blue-200" : "text-neutral-600"
+              )}
+            >
+              {latestMessage ? latestMessage.slice(0, 15) : "Say hi 👋"}
             </p>
           </div>
 
-          <div className="text-[10px] text-neutral-500">
+          <div
+            className={cn(
+              "text-[10px]",
+              isActive ? "text-blue-200" : "text-neutral-500"
+            )}
+          >
             {formatMessageTime(createdAt)}
           </div>
         </div>
