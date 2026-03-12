@@ -1,4 +1,4 @@
-import { ArrowRight, GlobeLock, Rocket, Video } from "lucide-react";
+import { ArrowRight, MessageCircle, Users, Video, Zap } from "lucide-react";
 import Link from "next/link";
 import FeauturesCard from "@/components/FeauturesCard";
 import Footer from "@/components/Footer";
@@ -8,21 +8,24 @@ export default function Home() {
   const featuresList = [
     {
       id: 1,
-      icon: <Video />,
-      title: "Video Calls",
-      description: "Connect face-to-face with friends through video calling.",
+      icon: <MessageCircle />,
+      title: "1-on-1 Direct Chat",
+      description:
+        "Chat privately with friends through secure one-on-one messaging.",
     },
     {
       id: 2,
-      icon: <GlobeLock />,
-      title: "Encrypted Messaging",
-      description: "Your messages are protected with end-to-end encryption.",
+      icon: <Users />,
+      title: "Group Chat",
+      description:
+        "Create groups and stay connected with multiple friends at once.",
     },
     {
       id: 3,
-      icon: <Rocket />,
-      title: "Blazing fast",
-      description: "Quick message delivery for smooth conversations.",
+      icon: <Zap />,
+      title: "Fast UI",
+      description:
+        "Smooth and responsive interface for a seamless chatting experience.",
     },
   ];
 
